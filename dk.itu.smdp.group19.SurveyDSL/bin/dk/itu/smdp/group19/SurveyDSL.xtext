@@ -7,7 +7,7 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 Survey returns Survey:
 	'start survey'
 	'title:' title=EString
-	'pages:' pages+=Page (',' pages+=Page)*
+	'pages:' pages+=Page (pages+=Page)*
 	'end survey';
 
 Page returns Page:
@@ -35,76 +35,75 @@ QuestionPage returns QuestionPage:
 	'add question page'
 	'title:' title=EString
 	('text:' text=EString)?
-	'questions:' questions+=Question (',' questions+=Question)*;
+	'questions:' questions+=Question (questions+=Question)*
+	'end page';
 
 DescriptionPage returns DescriptionPage:
 	'add description page'
 	'title:' title=EString
-	('text:' text=EString)?;
+	('text:' text=EString)?
+	'end page';
 
 ResultPage returns ResultPage:
 	'add result page'
 	'title:' title=EString
-	('text:' text=EString)?;
+	('text:' text=EString)?
+	
+	'end page';
 
-//Question_Impl returns Question:
+	//Question_Impl returns Question:
 //	optional?='optional'
 //	'Question'
 //	'{'
 //	'text' text=EString
 //	('requires' requires=Dependency)?
 //	'}';
-
 EBoolean returns ecore::EBoolean:
 	'true' | 'false';
 
 FreetextQuestion returns FreetextQuestion:
-	'add' (optional?='optional')? 'freetext question' 
+//	'add' (optional?='optional')? 'freetext question'
+	'add free text question'
+	(optional?='optional')?
 	'text:' text=EString
 	('requires:' requires=Dependency)?
-	'answers:' answers=FreetextAnswer;
+	'answers:' answers=FreetextAnswer
+	'end question';
 
 SingleChoiceQuestion returns SingleChoiceQuestion:
-	'add' (optional?='optional')? 'single choice question'
+//	'add' (optional?='optional')? 'single choice question'
+	'add single choice question' 
+	(optional?='optional')?
 	'text:' text=EString
 	('requires:' requires=Dependency)?
-	'answers:' answers+=Answer ("," answers+=Answer)*;
+	'answers:' answers+=Answer (answers+=Answer)*
+	'end question';
 
 MultiChoiceQuestion returns MultiChoiceQuestion:
-	'add' (optional?='optional')? 'multi choice question'
+	// 'add' (optional?='optional')? 'multi choice question'
+	'add multi choice question'
+	(optional?='optional')?
 	'text:' text=EString
 	('requires:' requires=Dependency)?
-	'answers:' answers+=Answer ("," answers+=Answer)*;
+	'answers:' answers+=Answer (answers+=Answer)*
+	'end question';
 
 And returns And:
-	'('
-	lhs=Dependency 'and'
-	rhs=Dependency
-	')';
+	'and(' lhs=Dependency 'and' rhs=Dependency ')';
 
 Or returns Or:
-	'Or'
-	'{'
-	'lhs' lhs=Dependency
-	'rhs' rhs=Dependency
-	'}';
+	'or(' lhs=Dependency 'or' rhs=Dependency ')';
 
 AnswerRef returns AnswerRef:
-	'AnswerRef'
-	'{'
-	'refers' refers=[Answer|EString]
-	'}';
+	'answer reference:' refers=[Answer|EString];
 
 ChoiceAnswer returns ChoiceAnswer:
-	selected?='selected'
-	'ChoiceAnswer'
-	'{'
-	'text' text=EString
-	'}';
+	'add answer choice'
+	'name:' name = ID
+	'text:' text = EString;
+
 
 FreetextAnswer returns FreetextAnswer:
-	'FreetextAnswer'
-	'{'
-	'text' text=EString
-	'input' input=EString
-	'}';
+	'add answer text'
+	'name:' name = ID
+	'text:' text = EString;

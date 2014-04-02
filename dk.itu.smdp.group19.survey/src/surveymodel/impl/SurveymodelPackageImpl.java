@@ -410,26 +410,8 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getChoiceAnswer_Selected() {
-		return (EAttribute)choiceAnswerEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getFreetextAnswer() {
 		return freetextAnswerEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getFreetextAnswer_Input() {
-		return (EAttribute)freetextAnswerEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -448,6 +430,15 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 	 */
 	public EAttribute getAnswer_Text() {
 		return (EAttribute)answerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAnswer_Name() {
+		return (EAttribute)answerEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -580,13 +571,12 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 		createEReference(multiChoiceQuestionEClass, MULTI_CHOICE_QUESTION__ANSWERS);
 
 		choiceAnswerEClass = createEClass(CHOICE_ANSWER);
-		createEAttribute(choiceAnswerEClass, CHOICE_ANSWER__SELECTED);
 
 		freetextAnswerEClass = createEClass(FREETEXT_ANSWER);
-		createEAttribute(freetextAnswerEClass, FREETEXT_ANSWER__INPUT);
 
 		answerEClass = createEClass(ANSWER);
 		createEAttribute(answerEClass, ANSWER__TEXT);
+		createEAttribute(answerEClass, ANSWER__NAME);
 
 		andEClass = createEClass(AND);
 
@@ -674,13 +664,12 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 		initEReference(getMultiChoiceQuestion_Answers(), this.getAnswer(), null, "answers", null, 1, -1, MultiChoiceQuestion.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(choiceAnswerEClass, ChoiceAnswer.class, "ChoiceAnswer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getChoiceAnswer_Selected(), ecorePackage.getEBoolean(), "selected", null, 1, 1, ChoiceAnswer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(freetextAnswerEClass, FreetextAnswer.class, "FreetextAnswer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getFreetextAnswer_Input(), ecorePackage.getEString(), "input", null, 1, 1, FreetextAnswer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(answerEClass, Answer.class, "Answer", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAnswer_Text(), ecorePackage.getEString(), "text", null, 1, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAnswer_Name(), ecorePackage.getEString(), "name", null, 1, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(andEClass, And.class, "And", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

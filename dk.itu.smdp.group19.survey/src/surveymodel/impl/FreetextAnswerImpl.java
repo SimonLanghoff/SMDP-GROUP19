@@ -12,10 +12,6 @@ import surveymodel.SurveymodelPackage;
  * An implementation of the model object '<em><b>Freetext Answer</b></em>'.
  * <!-- end-user-doc -->
  * <p>
- * The following features are implemented:
- * <ul>
- *   <li>{@link surveymodel.impl.FreetextAnswerImpl#getInput <em>Input</em>}</li>
- * </ul>
  * </p>
  *
  * @generated
@@ -38,24 +34,6 @@ public class FreetextAnswerImpl extends AnswerImpl implements FreetextAnswer {
 	@Override
 	protected EClass eStaticClass() {
 		return SurveymodelPackage.Literals.FREETEXT_ANSWER;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getInput() {
-		return (String)eGet(SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setInput(String newInput) {
-		eSet(SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT, newInput);
 	}
 
 } //FreetextAnswerImpl

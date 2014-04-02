@@ -562,13 +562,22 @@ public interface SurveymodelPackage extends EPackage {
 	int ANSWER__TEXT = 0;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANSWER__NAME = 1;
+
+	/**
 	 * The number of structural features of the '<em>Answer</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ANSWER_FEATURE_COUNT = 1;
+	int ANSWER_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Answer</em>' class.
@@ -599,13 +608,13 @@ public interface SurveymodelPackage extends EPackage {
 	int CHOICE_ANSWER__TEXT = ANSWER__TEXT;
 
 	/**
-	 * The feature id for the '<em><b>Selected</b></em>' attribute.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE_ANSWER__SELECTED = ANSWER_FEATURE_COUNT + 0;
+	int CHOICE_ANSWER__NAME = ANSWER__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Choice Answer</em>' class.
@@ -614,7 +623,7 @@ public interface SurveymodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CHOICE_ANSWER_FEATURE_COUNT = ANSWER_FEATURE_COUNT + 1;
+	int CHOICE_ANSWER_FEATURE_COUNT = ANSWER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Choice Answer</em>' class.
@@ -645,13 +654,13 @@ public interface SurveymodelPackage extends EPackage {
 	int FREETEXT_ANSWER__TEXT = ANSWER__TEXT;
 
 	/**
-	 * The feature id for the '<em><b>Input</b></em>' attribute.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FREETEXT_ANSWER__INPUT = ANSWER_FEATURE_COUNT + 0;
+	int FREETEXT_ANSWER__NAME = ANSWER__NAME;
 
 	/**
 	 * The number of structural features of the '<em>Freetext Answer</em>' class.
@@ -660,7 +669,7 @@ public interface SurveymodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FREETEXT_ANSWER_FEATURE_COUNT = ANSWER_FEATURE_COUNT + 1;
+	int FREETEXT_ANSWER_FEATURE_COUNT = ANSWER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Freetext Answer</em>' class.
@@ -1097,17 +1106,6 @@ public interface SurveymodelPackage extends EPackage {
 	EClass getChoiceAnswer();
 
 	/**
-	 * Returns the meta object for the attribute '{@link surveymodel.ChoiceAnswer#isSelected <em>Selected</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Selected</em>'.
-	 * @see surveymodel.ChoiceAnswer#isSelected()
-	 * @see #getChoiceAnswer()
-	 * @generated
-	 */
-	EAttribute getChoiceAnswer_Selected();
-
-	/**
 	 * Returns the meta object for class '{@link surveymodel.FreetextAnswer <em>Freetext Answer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1116,17 +1114,6 @@ public interface SurveymodelPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getFreetextAnswer();
-
-	/**
-	 * Returns the meta object for the attribute '{@link surveymodel.FreetextAnswer#getInput <em>Input</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Input</em>'.
-	 * @see surveymodel.FreetextAnswer#getInput()
-	 * @see #getFreetextAnswer()
-	 * @generated
-	 */
-	EAttribute getFreetextAnswer_Input();
 
 	/**
 	 * Returns the meta object for class '{@link surveymodel.Answer <em>Answer</em>}'.
@@ -1148,6 +1135,17 @@ public interface SurveymodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAnswer_Text();
+
+	/**
+	 * Returns the meta object for the attribute '{@link surveymodel.Answer#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see surveymodel.Answer#getName()
+	 * @see #getAnswer()
+	 * @generated
+	 */
+	EAttribute getAnswer_Name();
 
 	/**
 	 * Returns the meta object for class '{@link surveymodel.And <em>And</em>}'.
@@ -1444,14 +1442,6 @@ public interface SurveymodelPackage extends EPackage {
 		EClass CHOICE_ANSWER = eINSTANCE.getChoiceAnswer();
 
 		/**
-		 * The meta object literal for the '<em><b>Selected</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CHOICE_ANSWER__SELECTED = eINSTANCE.getChoiceAnswer_Selected();
-
-		/**
 		 * The meta object literal for the '{@link surveymodel.impl.FreetextAnswerImpl <em>Freetext Answer</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1460,14 +1450,6 @@ public interface SurveymodelPackage extends EPackage {
 		 * @generated
 		 */
 		EClass FREETEXT_ANSWER = eINSTANCE.getFreetextAnswer();
-
-		/**
-		 * The meta object literal for the '<em><b>Input</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute FREETEXT_ANSWER__INPUT = eINSTANCE.getFreetextAnswer_Input();
 
 		/**
 		 * The meta object literal for the '{@link surveymodel.impl.AnswerImpl <em>Answer</em>}' class.
@@ -1486,6 +1468,14 @@ public interface SurveymodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ANSWER__TEXT = eINSTANCE.getAnswer_Text();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ANSWER__NAME = eINSTANCE.getAnswer_Name();
 
 		/**
 		 * The meta object literal for the '{@link surveymodel.impl.AndImpl <em>And</em>}' class.

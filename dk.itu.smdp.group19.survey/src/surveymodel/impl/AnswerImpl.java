@@ -17,6 +17,7 @@ import surveymodel.SurveymodelPackage;
  * The following features are implemented:
  * <ul>
  *   <li>{@link surveymodel.impl.AnswerImpl#getText <em>Text</em>}</li>
+ *   <li>{@link surveymodel.impl.AnswerImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,6 +69,24 @@ public abstract class AnswerImpl extends CDOObjectImpl implements Answer {
 	 */
 	public void setText(String newText) {
 		eSet(SurveymodelPackage.Literals.ANSWER__TEXT, newText);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return (String)eGet(SurveymodelPackage.Literals.ANSWER__NAME, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		eSet(SurveymodelPackage.Literals.ANSWER__NAME, newName);
 	}
 
 } //AnswerImpl

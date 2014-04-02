@@ -153,25 +153,25 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getAnswerRefAccess().getRefersAnswerEStringParserRuleCall_3_0_1(), semanticObject.getRefers());
+		feeder.accept(grammarAccess.getAnswerRefAccess().getRefersAnswerEStringParserRuleCall_1_0_1(), semanticObject.getRefers());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     (selected?='selected' text=EString)
+	 *     (name=ID text=EString)
 	 */
 	protected void sequence_ChoiceAnswer(EObject context, ChoiceAnswer semanticObject) {
 		if(errorAcceptor != null) {
 			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.CHOICE_ANSWER__SELECTED) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.CHOICE_ANSWER__SELECTED));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getChoiceAnswerAccess().getSelectedSelectedKeyword_0_0(), semanticObject.isSelected());
+		feeder.accept(grammarAccess.getChoiceAnswerAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
 		feeder.accept(grammarAccess.getChoiceAnswerAccess().getTextEStringParserRuleCall_4_0(), semanticObject.getText());
 		feeder.finish();
 	}
@@ -188,19 +188,19 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (text=EString input=EString)
+	 *     (name=ID text=EString)
 	 */
 	protected void sequence_FreetextAnswer(EObject context, FreetextAnswer semanticObject) {
 		if(errorAcceptor != null) {
 			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getFreetextAnswerAccess().getTextEStringParserRuleCall_3_0(), semanticObject.getText());
-		feeder.accept(grammarAccess.getFreetextAnswerAccess().getInputEStringParserRuleCall_5_0(), semanticObject.getInput());
+		feeder.accept(grammarAccess.getFreetextAnswerAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getFreetextAnswerAccess().getTextEStringParserRuleCall_4_0(), semanticObject.getText());
 		feeder.finish();
 	}
 	
@@ -236,8 +236,8 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getOrAccess().getLhsDependencyParserRuleCall_3_0(), semanticObject.getLhs());
-		feeder.accept(grammarAccess.getOrAccess().getRhsDependencyParserRuleCall_5_0(), semanticObject.getRhs());
+		feeder.accept(grammarAccess.getOrAccess().getLhsDependencyParserRuleCall_1_0(), semanticObject.getLhs());
+		feeder.accept(grammarAccess.getOrAccess().getRhsDependencyParserRuleCall_3_0(), semanticObject.getRhs());
 		feeder.finish();
 	}
 	
