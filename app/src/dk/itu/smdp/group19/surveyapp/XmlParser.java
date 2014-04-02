@@ -22,6 +22,8 @@ public class XmlParser {
 	public XmlParser(String xmlFileDir) {
 		File file = new File(xmlFileDir);
 		if(file.exists() && file.isFile()) {
+			Log.d(TAG, "File found.");
+			
 			factory = SAXParserFactory.newInstance();
 			handler = createHandler();
 			
@@ -35,6 +37,8 @@ public class XmlParser {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else {
+			Log.d(TAG, "File not found.");
 		}
 	}
 
@@ -42,20 +46,22 @@ public class XmlParser {
 		DefaultHandler dh = new DefaultHandler() {
 			@Override
 			public void startDocument() throws SAXException {
-				Log.i(TAG, "startDocument");
+				Log.d(TAG, "startDocument");
 			}
-			
+
+			@Override
 			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException {
-				Log.i(TAG, "startElement");
+				Log.d(TAG, "startElement");
 			}
 
 			@Override
 			public void characters(char[] ch, int start, int length) throws SAXException {
-				Log.i(TAG, "characters");
+				Log.d(TAG, "characters");
 			}
-			
+
+			@Override
 			public void endElement(String uri, String localName, String qName) throws SAXException {
-				Log.i(TAG, "endElement");
+				Log.d(TAG, "endElement");
 			}
 
 			@Override

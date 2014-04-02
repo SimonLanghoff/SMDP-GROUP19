@@ -16,7 +16,6 @@ public class MainActivity extends Activity {
 	}
 	
 	public void buttonStartSurveyOnClick(View v) {
-		Log.d(TAG, "Starting survey activity");
 		Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
 		startActivity(i);
 	}
