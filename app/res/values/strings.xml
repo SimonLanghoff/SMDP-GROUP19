@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="hello_world">Hello world!</string>
+    
     <string name="app_name">Survey App</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="welcomeMessage">Welcome to our survey app.</string>
+    <string name="buttonStartSurvey">Start Survey</string>
+    <string name="title_activity_survey">SurveyActivity</string>
 
 </resources>

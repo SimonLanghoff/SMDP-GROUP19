@@ -6,21 +6,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".SurveyActivity" >
 
     <TextView
-        android:id="@+id/textViewWelcomeMessage"
+        android:id="@+id/textViewStatus"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/welcomeMessage" />
-    
-    <Button 
-        android:id="@+id/buttonStartSurvey"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewWelcomeMessage"
-        android:text="@string/buttonStartSurvey"
-        android:onClick="buttonStartSurveyOnClick" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>
