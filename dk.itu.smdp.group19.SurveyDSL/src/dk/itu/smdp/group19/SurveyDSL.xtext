@@ -16,7 +16,8 @@ Question returns Question:
 	FreetextQuestion | SingleChoiceQuestion | MultiChoiceQuestion;
 
 Dependency returns Dependency:
-	And | Or | Not | AnswerRef;
+	CheckOr
+;
 
 Answer returns Answer:
 	ChoiceAnswer | FreetextAnswer;
@@ -80,11 +81,21 @@ MultiChoiceQuestion returns MultiChoiceQuestion:
 	'answers:' answers+=Answer (answers+=Answer)*
 	'end question';
 
-And returns And:
-	'and(' lhs=Dependency 'and' rhs=Dependency ')';
+CheckOr returns Dependency:
+	CheckAnd ({Or.lhs=current} 'or' rhs=CheckAnd)*
+;
 
-Or returns Or:
-	'or(' lhs=Dependency 'or' rhs=Dependency ')';
+CheckAnd returns Dependency:
+	CheckNot ({And.lhs=current} 'and' rhs=CheckNot)*
+;
+
+CheckNot returns Dependency:
+	'not' Bottom ({Not.dependency=current}) | Bottom
+;
+
+Bottom returns Dependency:
+	AnswerRef | '(' Dependency ')' 
+;
 
 Not returns Not:
 	'not' dependency=Dependency
