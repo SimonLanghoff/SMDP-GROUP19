@@ -70,6 +70,7 @@ public class SurveymodelFactoryImpl extends EFactoryImpl implements SurveymodelF
 			case SurveymodelPackage.AND: return (EObject)createAnd();
 			case SurveymodelPackage.OR: return (EObject)createOr();
 			case SurveymodelPackage.ANSWER_REF: return (EObject)createAnswerRef();
+			case SurveymodelPackage.NOT: return (EObject)createNot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -213,6 +214,16 @@ public class SurveymodelFactoryImpl extends EFactoryImpl implements SurveymodelF
 	public AnswerRef createAnswerRef() {
 		AnswerRefImpl answerRef = new AnswerRefImpl();
 		return answerRef;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Not createNot() {
+		NotImpl not = new NotImpl();
+		return not;
 	}
 
 	/**

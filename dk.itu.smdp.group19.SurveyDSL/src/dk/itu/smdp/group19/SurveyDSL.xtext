@@ -5,8 +5,7 @@ import "platform:/resource/dk.itu.smdp.group19.survey/model/Survey.ecore"
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 Survey returns Survey:
-	'start survey'
-	'title:' title=EString
+	'start survey' title=EString 
 	'pages:' pages+=Page (pages+=Page)*
 	'end survey';
 
@@ -31,24 +30,20 @@ EString returns ecore::EString:
 //		'title' title=EString
 //		('text' text=EString)?
 //	'}';
+
 QuestionPage returns QuestionPage:
-	'add question page'
-	'title:' title=EString
-	('text:' text=EString)?
+	'question page' title=EString (':' text=EString)?
 	'questions:' questions+=Question (questions+=Question)*
 	'end page';
 
 DescriptionPage returns DescriptionPage:
-	'add description page'
-	'title:' title=EString
-	('text:' text=EString)?
+	'description page' title=EString 
+	(':' text=EString)?
 	'end page';
 
 ResultPage returns ResultPage:
-	'add result page'
-	'title:' title=EString
-	('text:' text=EString)?
-	
+	'result page' title=EString 
+	(':' text=EString)?
 	'end page';
 
 	//Question_Impl returns Question:
@@ -63,27 +58,24 @@ EBoolean returns ecore::EBoolean:
 
 FreetextQuestion returns FreetextQuestion:
 //	'add' (optional?='optional')? 'freetext question'
-	'add free text question'
+	'free text question'  text=EString 
 	(optional?='optional')?
-	'text:' text=EString
 	('requires:' requires=Dependency)?
 	'answers:' answers=FreetextAnswer
 	'end question';
 
 SingleChoiceQuestion returns SingleChoiceQuestion:
 //	'add' (optional?='optional')? 'single choice question'
-	'add single choice question' 
+	'single choice question' text=EString 
 	(optional?='optional')?
-	'text:' text=EString
 	('requires:' requires=Dependency)?
 	'answers:' answers+=Answer (answers+=Answer)*
 	'end question';
 
 MultiChoiceQuestion returns MultiChoiceQuestion:
 	// 'add' (optional?='optional')? 'multi choice question'
-	'add multi choice question'
+	'multi choice question' text=EString 
 	(optional?='optional')?
-	'text:' text=EString
 	('requires:' requires=Dependency)?
 	'answers:' answers+=Answer (answers+=Answer)*
 	'end question';
@@ -94,16 +86,20 @@ And returns And:
 Or returns Or:
 	'or(' lhs=Dependency 'or' rhs=Dependency ')';
 
+Not returns Not:
+	'not' dependency=Dependency
+;
+
 AnswerRef returns AnswerRef:
 	'answer reference:' refers=[Answer|EString];
 
 ChoiceAnswer returns ChoiceAnswer:
-	'add answer choice'
-	'name:' name = ID
-	'text:' text = EString;
+	'answer choice'
+	name = ID ':'
+	text = EString;
 
 
 FreetextAnswer returns FreetextAnswer:
-	'add answer text'
-	'name:' name = ID
-	'text:' text = EString;
+	'answer text'
+	name = ID ':'
+	text = EString;

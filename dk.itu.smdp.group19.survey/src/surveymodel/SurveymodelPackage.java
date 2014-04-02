@@ -885,6 +885,44 @@ public interface SurveymodelPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link surveymodel.impl.NotImpl <em>Not</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see surveymodel.impl.NotImpl
+	 * @see surveymodel.impl.SurveymodelPackageImpl#getNot()
+	 * @generated
+	 */
+	int NOT = 17;
+
+	/**
+	 * The feature id for the '<em><b>Dependency</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT__DEPENDENCY = DEPENDENCY_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Not</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_FEATURE_COUNT = DEPENDENCY_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Not</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOT_OPERATION_COUNT = DEPENDENCY_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link surveymodel.Survey <em>Survey</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1231,6 +1269,27 @@ public interface SurveymodelPackage extends EPackage {
 	EReference getAnswerRef_Refers();
 
 	/**
+	 * Returns the meta object for class '{@link surveymodel.Not <em>Not</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Not</em>'.
+	 * @see surveymodel.Not
+	 * @generated
+	 */
+	EClass getNot();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link surveymodel.Not#getDependency <em>Dependency</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Dependency</em>'.
+	 * @see surveymodel.Not#getDependency()
+	 * @see #getNot()
+	 * @generated
+	 */
+	EReference getNot_Dependency();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1550,6 +1609,24 @@ public interface SurveymodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ANSWER_REF__REFERS = eINSTANCE.getAnswerRef_Refers();
+
+		/**
+		 * The meta object literal for the '{@link surveymodel.impl.NotImpl <em>Not</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see surveymodel.impl.NotImpl
+		 * @see surveymodel.impl.SurveymodelPackageImpl#getNot()
+		 * @generated
+		 */
+		EClass NOT = eINSTANCE.getNot();
+
+		/**
+		 * The meta object literal for the '<em><b>Dependency</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NOT__DEPENDENCY = eINSTANCE.getNot_Dependency();
 
 	}
 

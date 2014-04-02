@@ -19,6 +19,7 @@ import surveymodel.Expression;
 import surveymodel.FreetextAnswer;
 import surveymodel.FreetextQuestion;
 import surveymodel.MultiChoiceQuestion;
+import surveymodel.Not;
 import surveymodel.Or;
 import surveymodel.Page;
 import surveymodel.Question;
@@ -154,6 +155,13 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 	 * @generated
 	 */
 	private EClass answerRefEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass notEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -518,6 +526,24 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getNot() {
+		return notEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getNot_Dependency() {
+		return (EReference)notEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SurveymodelFactory getSurveymodelFactory() {
 		return (SurveymodelFactory)getEFactoryInstance();
 	}
@@ -590,6 +616,9 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 
 		answerRefEClass = createEClass(ANSWER_REF);
 		createEReference(answerRefEClass, ANSWER_REF__REFERS);
+
+		notEClass = createEClass(NOT);
+		createEReference(notEClass, NOT__DEPENDENCY);
 	}
 
 	/**
@@ -632,6 +661,7 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 		orEClass.getESuperTypes().add(this.getExpression());
 		expressionEClass.getESuperTypes().add(this.getDependency());
 		answerRefEClass.getESuperTypes().add(this.getDependency());
+		notEClass.getESuperTypes().add(this.getDependency());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(surveyEClass, Survey.class, "Survey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -683,6 +713,9 @@ public class SurveymodelPackageImpl extends EPackageImpl implements SurveymodelP
 
 		initEClass(answerRefEClass, AnswerRef.class, "AnswerRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAnswerRef_Refers(), this.getAnswer(), null, "refers", null, 1, 1, AnswerRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(notEClass, Not.class, "Not", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNot_Dependency(), this.getDependency(), null, "dependency", null, 1, 1, Not.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

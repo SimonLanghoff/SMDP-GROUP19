@@ -56,4 +56,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="refers" lowerBound="1"
         eType="#//Answer"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//Dependency">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependency" lowerBound="1"
+        eType="#//Dependency" containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

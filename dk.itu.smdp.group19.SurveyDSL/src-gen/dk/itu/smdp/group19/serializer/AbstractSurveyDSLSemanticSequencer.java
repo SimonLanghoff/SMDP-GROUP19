@@ -21,6 +21,7 @@ import surveymodel.DescriptionPage;
 import surveymodel.FreetextAnswer;
 import surveymodel.FreetextQuestion;
 import surveymodel.MultiChoiceQuestion;
+import surveymodel.Not;
 import surveymodel.Or;
 import surveymodel.QuestionPage;
 import surveymodel.ResultPage;
@@ -82,6 +83,12 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 				if(context == grammarAccess.getMultiChoiceQuestionRule() ||
 				   context == grammarAccess.getQuestionRule()) {
 					sequence_MultiChoiceQuestion(context, (MultiChoiceQuestion) semanticObject); 
+					return; 
+				}
+				else break;
+			case SurveymodelPackage.NOT:
+				if(context == grammarAccess.getNotRule()) {
+					sequence_Not(context, (Not) semanticObject); 
 					return; 
 				}
 				else break;
@@ -171,8 +178,8 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getChoiceAnswerAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getChoiceAnswerAccess().getTextEStringParserRuleCall_4_0(), semanticObject.getText());
+		feeder.accept(grammarAccess.getChoiceAnswerAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getChoiceAnswerAccess().getTextEStringParserRuleCall_3_0(), semanticObject.getText());
 		feeder.finish();
 	}
 	
@@ -199,15 +206,15 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getFreetextAnswerAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getFreetextAnswerAccess().getTextEStringParserRuleCall_4_0(), semanticObject.getText());
+		feeder.accept(grammarAccess.getFreetextAnswerAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getFreetextAnswerAccess().getTextEStringParserRuleCall_3_0(), semanticObject.getText());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     (optional?='optional'? text=EString requires=Dependency? answers=FreetextAnswer)
+	 *     (text=EString optional?='optional'? requires=Dependency? answers=FreetextAnswer)
 	 */
 	protected void sequence_FreetextQuestion(EObject context, FreetextQuestion semanticObject) {
 		genericSequencer.createSequence(context, (EObject)semanticObject);
@@ -216,10 +223,26 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (optional?='optional'? text=EString requires=Dependency? answers+=Answer answers+=Answer*)
+	 *     (text=EString optional?='optional'? requires=Dependency? answers+=Answer answers+=Answer*)
 	 */
 	protected void sequence_MultiChoiceQuestion(EObject context, MultiChoiceQuestion semanticObject) {
 		genericSequencer.createSequence(context, (EObject)semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     dependency=Dependency
+	 */
+	protected void sequence_Not(EObject context, Not semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.NOT__DEPENDENCY) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.NOT__DEPENDENCY));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
+		feeder.accept(grammarAccess.getNotAccess().getDependencyDependencyParserRuleCall_1_0(), semanticObject.getDependency());
+		feeder.finish();
 	}
 	
 	
@@ -262,7 +285,7 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (optional?='optional'? text=EString requires=Dependency? answers+=Answer answers+=Answer*)
+	 *     (text=EString optional?='optional'? requires=Dependency? answers+=Answer answers+=Answer*)
 	 */
 	protected void sequence_SingleChoiceQuestion(EObject context, SingleChoiceQuestion semanticObject) {
 		genericSequencer.createSequence(context, (EObject)semanticObject);
