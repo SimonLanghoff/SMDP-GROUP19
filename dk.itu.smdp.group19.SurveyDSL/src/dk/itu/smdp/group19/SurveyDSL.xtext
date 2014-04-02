@@ -97,10 +97,6 @@ Bottom returns Dependency:
 	AnswerRef | '(' Dependency ')' 
 ;
 
-Not returns Not:
-	'not' dependency=Dependency
-;
-
 AnswerRef returns AnswerRef:
 	refers=[Answer|EString];
 
