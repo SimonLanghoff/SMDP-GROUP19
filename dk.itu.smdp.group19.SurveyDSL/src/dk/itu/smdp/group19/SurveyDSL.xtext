@@ -16,7 +16,7 @@ Question returns Question:
 	FreetextQuestion | SingleChoiceQuestion | MultiChoiceQuestion;
 
 Dependency returns Dependency:
-	And | Or | AnswerRef;
+	And | Or | Not | AnswerRef;
 
 Answer returns Answer:
 	ChoiceAnswer | FreetextAnswer;
@@ -57,25 +57,25 @@ EBoolean returns ecore::EBoolean:
 	'true' | 'false';
 
 FreetextQuestion returns FreetextQuestion:
-//	'add' (optional?='optional')? 'freetext question'
+	 (optional?='optional')?
 	'free text question'  text=EString 
-	(optional?='optional')?
+//	(optional?='optional')?
 	('requires:' requires=Dependency)?
 	'answers:' answers=FreetextAnswer
 	'end question';
 
 SingleChoiceQuestion returns SingleChoiceQuestion:
-//	'add' (optional?='optional')? 'single choice question'
-	'single choice question' text=EString 
-	(optional?='optional')?
+	(optional?='optional')? 'single choice question'
+	 text=EString 
+//	(optional?='optional')?
 	('requires:' requires=Dependency)?
 	'answers:' answers+=Answer (answers+=Answer)*
 	'end question';
 
 MultiChoiceQuestion returns MultiChoiceQuestion:
-	// 'add' (optional?='optional')? 'multi choice question'
+	 (optional?='optional')?
 	'multi choice question' text=EString 
-	(optional?='optional')?
+//	(optional?='optional')?
 	('requires:' requires=Dependency)?
 	'answers:' answers+=Answer (answers+=Answer)*
 	'end question';
@@ -91,7 +91,7 @@ Not returns Not:
 ;
 
 AnswerRef returns AnswerRef:
-	'answer reference:' refers=[Answer|EString];
+	refers=[Answer|EString];
 
 ChoiceAnswer returns ChoiceAnswer:
 	'answer choice'
