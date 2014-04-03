@@ -7,6 +7,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -36,7 +37,9 @@ public class UserControlGenerator {
 	}
 	
 	public ViewGroup makeMultiChoiceAnswers(Map<String, Boolean> answers, final AnswerChangeListener acl) {
-		LinearLayout ll = new LinearLayout(context);
+		RelativeLayout ll = new RelativeLayout(context);
+		RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		lparams.addRule(RelativeLayout.CENTER_VERTICAL); // center text box, i hope
 		
 		for(Entry<String, Boolean> answer : answers.entrySet()) {
 			final CheckBox cb = makeCheckBox(answer.getKey());
