@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ASCII"?>
+<surveymodel:Survey
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:surveymodel="platform:/resource/dk.itu.smdp.group19.survey/model/Survey.ecore"
+    title="Test Survey">
+  <pages xsi:type="surveymodel:QuestionPage"
+      title="Question Page 1"
+      text="This page will have some test questions">
+    <questions
+        xsi:type="surveymodel:SingleChoiceQuestion"
+        text="Test Question 1">
+      <answers
+          xsi:type="surveymodel:FreetextAnswer"
+          text="Type in your own answer!"
+          name="Answer A"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          text="This is answer B"
+          name="Answer B"/>
+    </questions>
+    <questions
+        xsi:type="surveymodel:FreetextQuestion"
+        text="Please Let us know what we can do to improve this survey"
+        optional="true">
+      <requires
+          xsi:type="surveymodel:Or">
+        <lhs
+            xsi:type="surveymodel:AnswerRef"
+            refers="Answer A"/>
+        <rhs
+            xsi:type="surveymodel:AnswerRef"
+            refers="Answer B"/>
+      </requires>
+      <answers
+          text="&quot;&quot;"
+          name="Please Specify"/>
+    </questions>
+  </pages>
+  <pages xsi:type="surveymodel:ResultPage"
+      title="Done!"
+      text="Congratulations, you survived!"/>
+</surveymodel:Survey>
