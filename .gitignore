@@ -23,17 +23,3 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 .metadata/
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/AbstractSurveyDSLProposalProvider.java
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/serializer/AbstractSurveyDSLSemanticSequencer.java
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/serializer/AbstractSurveyDSLSyntacticSequencer.java
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/antlr/internal/InternalSurveyDSL.g
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/parser/antlr/internal/InternalSurveyDSL.g
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/antlr/internal/InternalSurveyDSL.tokens
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/parser/antlr/internal/InternalSurveyDSL.tokens
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/antlr/internal/InternalSurveyDSLLexer.java
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/parser/antlr/internal/InternalSurveyDSLLexer.java
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/antlr/internal/InternalSurveyDSLParser.java
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/parser/antlr/internal/InternalSurveyDSLParser.java
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/SurveyDSL.xtextbin
-dk.itu.smdp.group19.SurveyDSL/src-gen/dk/itu/smdp/group19/services/SurveyDSLGrammarAccess.java
-dk.itu.smdp.group19.SurveyDSL.ui/src-gen/dk/itu/smdp/group19/ui/contentassist/antlr/SurveyDSLParser.java
