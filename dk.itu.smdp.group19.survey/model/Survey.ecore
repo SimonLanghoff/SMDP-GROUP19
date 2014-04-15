@@ -36,15 +36,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="answers" lowerBound="1"
         upperBound="-1" eType="#//Answer" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ChoiceAnswer" eSuperTypes="#//Answer">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="selected" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FreetextAnswer" eSuperTypes="#//Answer">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="input" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ChoiceAnswer" eSuperTypes="#//Answer"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FreetextAnswer" eSuperTypes="#//Answer"/>
   <eClassifiers xsi:type="ecore:EClass" name="Answer" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//Expression"/>
@@ -58,5 +55,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="AnswerRef" eSuperTypes="#//Dependency">
     <eStructuralFeatures xsi:type="ecore:EReference" name="refers" lowerBound="1"
         eType="#//Answer"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//Dependency">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependency" lowerBound="1"
+        eType="#//Dependency" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -21,6 +21,7 @@ import surveymodel.DescriptionPage;
 import surveymodel.FreetextAnswer;
 import surveymodel.FreetextQuestion;
 import surveymodel.MultiChoiceQuestion;
+import surveymodel.Not;
 import surveymodel.Or;
 import surveymodel.QuestionPage;
 import surveymodel.ResultPage;
@@ -37,14 +38,27 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == SurveymodelPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case SurveymodelPackage.AND:
-				if(context == grammarAccess.getAndRule() ||
+				if(context == grammarAccess.getBottomRule() ||
+				   context == grammarAccess.getCheckAndRule() ||
+				   context == grammarAccess.getCheckAndAccess().getAndLhsAction_1_0() ||
+				   context == grammarAccess.getCheckNotRule() ||
+				   context == grammarAccess.getCheckNotAccess().getNotDependencyAction_0_2() ||
+				   context == grammarAccess.getCheckOrRule() ||
+				   context == grammarAccess.getCheckOrAccess().getOrLhsAction_1_0() ||
 				   context == grammarAccess.getDependencyRule()) {
-					sequence_And(context, (And) semanticObject); 
+					sequence_CheckAnd(context, (And) semanticObject); 
 					return; 
 				}
 				else break;
 			case SurveymodelPackage.ANSWER_REF:
 				if(context == grammarAccess.getAnswerRefRule() ||
+				   context == grammarAccess.getBottomRule() ||
+				   context == grammarAccess.getCheckAndRule() ||
+				   context == grammarAccess.getCheckAndAccess().getAndLhsAction_1_0() ||
+				   context == grammarAccess.getCheckNotRule() ||
+				   context == grammarAccess.getCheckNotAccess().getNotDependencyAction_0_2() ||
+				   context == grammarAccess.getCheckOrRule() ||
+				   context == grammarAccess.getCheckOrAccess().getOrLhsAction_1_0() ||
 				   context == grammarAccess.getDependencyRule()) {
 					sequence_AnswerRef(context, (AnswerRef) semanticObject); 
 					return; 
@@ -85,10 +99,29 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 					return; 
 				}
 				else break;
+			case SurveymodelPackage.NOT:
+				if(context == grammarAccess.getBottomRule() ||
+				   context == grammarAccess.getCheckAndRule() ||
+				   context == grammarAccess.getCheckAndAccess().getAndLhsAction_1_0() ||
+				   context == grammarAccess.getCheckNotRule() ||
+				   context == grammarAccess.getCheckNotAccess().getNotDependencyAction_0_2() ||
+				   context == grammarAccess.getCheckOrRule() ||
+				   context == grammarAccess.getCheckOrAccess().getOrLhsAction_1_0() ||
+				   context == grammarAccess.getDependencyRule()) {
+					sequence_CheckNot(context, (Not) semanticObject); 
+					return; 
+				}
+				else break;
 			case SurveymodelPackage.OR:
-				if(context == grammarAccess.getDependencyRule() ||
-				   context == grammarAccess.getOrRule()) {
-					sequence_Or(context, (Or) semanticObject); 
+				if(context == grammarAccess.getBottomRule() ||
+				   context == grammarAccess.getCheckAndRule() ||
+				   context == grammarAccess.getCheckAndAccess().getAndLhsAction_1_0() ||
+				   context == grammarAccess.getCheckNotRule() ||
+				   context == grammarAccess.getCheckNotAccess().getNotDependencyAction_0_2() ||
+				   context == grammarAccess.getCheckOrRule() ||
+				   context == grammarAccess.getCheckOrAccess().getOrLhsAction_1_0() ||
+				   context == grammarAccess.getDependencyRule()) {
+					sequence_CheckOr(context, (Or) semanticObject); 
 					return; 
 				}
 				else break;
@@ -125,25 +158,6 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (lhs=Dependency rhs=Dependency)
-	 */
-	protected void sequence_And(EObject context, And semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getAndAccess().getLhsDependencyParserRuleCall_1_0(), semanticObject.getLhs());
-		feeder.accept(grammarAccess.getAndAccess().getRhsDependencyParserRuleCall_3_0(), semanticObject.getRhs());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     refers=[Answer|EString]
 	 */
 	protected void sequence_AnswerRef(EObject context, AnswerRef semanticObject) {
@@ -153,26 +167,80 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getAnswerRefAccess().getRefersAnswerEStringParserRuleCall_3_0_1(), semanticObject.getRefers());
+		feeder.accept(grammarAccess.getAnswerRefAccess().getRefersAnswerEStringParserRuleCall_0_1(), semanticObject.getRefers());
 		feeder.finish();
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     (selected?='selected' text=EString)
+	 *     (lhs=CheckAnd_And_1_0 rhs=CheckNot)
+	 */
+	protected void sequence_CheckAnd(EObject context, And semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
+		feeder.accept(grammarAccess.getCheckAndAccess().getAndLhsAction_1_0(), semanticObject.getLhs());
+		feeder.accept(grammarAccess.getCheckAndAccess().getRhsCheckNotParserRuleCall_1_2_0(), semanticObject.getRhs());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     dependency=CheckNot_Not_0_2
+	 */
+	protected void sequence_CheckNot(EObject context, Not semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.NOT__DEPENDENCY) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.NOT__DEPENDENCY));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
+		feeder.accept(grammarAccess.getCheckNotAccess().getNotDependencyAction_0_2(), semanticObject.getDependency());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (lhs=CheckOr_Or_1_0 rhs=CheckAnd)
+	 */
+	protected void sequence_CheckOr(EObject context, Or semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
+		feeder.accept(grammarAccess.getCheckOrAccess().getOrLhsAction_1_0(), semanticObject.getLhs());
+		feeder.accept(grammarAccess.getCheckOrAccess().getRhsCheckAndParserRuleCall_1_2_0(), semanticObject.getRhs());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=ID text=EString)
 	 */
 	protected void sequence_ChoiceAnswer(EObject context, ChoiceAnswer semanticObject) {
 		if(errorAcceptor != null) {
 			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.CHOICE_ANSWER__SELECTED) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.CHOICE_ANSWER__SELECTED));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getChoiceAnswerAccess().getSelectedSelectedKeyword_0_0(), semanticObject.isSelected());
-		feeder.accept(grammarAccess.getChoiceAnswerAccess().getTextEStringParserRuleCall_4_0(), semanticObject.getText());
+		feeder.accept(grammarAccess.getChoiceAnswerAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getChoiceAnswerAccess().getTextEStringParserRuleCall_3_0(), semanticObject.getText());
 		feeder.finish();
 	}
 	
@@ -188,19 +256,19 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	
 	/**
 	 * Constraint:
-	 *     (text=EString input=EString)
+	 *     (name=ID text=EString)
 	 */
 	protected void sequence_FreetextAnswer(EObject context, FreetextAnswer semanticObject) {
 		if(errorAcceptor != null) {
 			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__TEXT));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.FREETEXT_ANSWER__INPUT));
+			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.ANSWER__NAME));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
+		feeder.accept(grammarAccess.getFreetextAnswerAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.accept(grammarAccess.getFreetextAnswerAccess().getTextEStringParserRuleCall_3_0(), semanticObject.getText());
-		feeder.accept(grammarAccess.getFreetextAnswerAccess().getInputEStringParserRuleCall_5_0(), semanticObject.getInput());
 		feeder.finish();
 	}
 	
@@ -220,25 +288,6 @@ public abstract class AbstractSurveyDSLSemanticSequencer extends AbstractDelegat
 	 */
 	protected void sequence_MultiChoiceQuestion(EObject context, MultiChoiceQuestion semanticObject) {
 		genericSequencer.createSequence(context, (EObject)semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (lhs=Dependency rhs=Dependency)
-	 */
-	protected void sequence_Or(EObject context, Or semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__LHS));
-			if(transientValues.isValueTransient((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing((EObject)semanticObject, SurveymodelPackage.Literals.EXPRESSION__RHS));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider((EObject)semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder((EObject)semanticObject, nodes);
-		feeder.accept(grammarAccess.getOrAccess().getLhsDependencyParserRuleCall_3_0(), semanticObject.getLhs());
-		feeder.accept(grammarAccess.getOrAccess().getRhsDependencyParserRuleCall_5_0(), semanticObject.getRhs());
-		feeder.finish();
 	}
 	
 	

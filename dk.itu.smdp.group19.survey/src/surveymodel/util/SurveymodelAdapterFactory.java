@@ -136,6 +136,10 @@ public class SurveymodelAdapterFactory extends AdapterFactoryImpl {
 				return createAnswerRefAdapter();
 			}
 			@Override
+			public Adapter caseNot(Not object) {
+				return createNotAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -390,6 +394,20 @@ public class SurveymodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAnswerRefAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link surveymodel.Not <em>Not</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see surveymodel.Not
+	 * @generated
+	 */
+	public Adapter createNotAdapter() {
 		return null;
 	}
 

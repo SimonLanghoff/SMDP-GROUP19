@@ -34,14 +34,11 @@
     <genClasses ecoreClass="Survey.ecore#//MultiChoiceQuestion">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Survey.ecore#//MultiChoiceQuestion/answers"/>
     </genClasses>
-    <genClasses ecoreClass="Survey.ecore#//ChoiceAnswer">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Survey.ecore#//ChoiceAnswer/selected"/>
-    </genClasses>
-    <genClasses ecoreClass="Survey.ecore#//FreetextAnswer">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Survey.ecore#//FreetextAnswer/input"/>
-    </genClasses>
+    <genClasses ecoreClass="Survey.ecore#//ChoiceAnswer"/>
+    <genClasses ecoreClass="Survey.ecore#//FreetextAnswer"/>
     <genClasses image="false" ecoreClass="Survey.ecore#//Answer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Survey.ecore#//Answer/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Survey.ecore#//Answer/name"/>
     </genClasses>
     <genClasses ecoreClass="Survey.ecore#//And"/>
     <genClasses ecoreClass="Survey.ecore#//Or"/>
@@ -52,6 +49,9 @@
     <genClasses image="false" ecoreClass="Survey.ecore#//Dependency"/>
     <genClasses ecoreClass="Survey.ecore#//AnswerRef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Survey.ecore#//AnswerRef/refers"/>
+    </genClasses>
+    <genClasses ecoreClass="Survey.ecore#//Not">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Survey.ecore#//Not/dependency"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
