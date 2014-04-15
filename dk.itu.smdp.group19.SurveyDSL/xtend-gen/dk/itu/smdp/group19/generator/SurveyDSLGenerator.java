@@ -45,11 +45,11 @@ public class SurveyDSLGenerator implements IGenerator {
       EList<Page> _pages = it.getPages();
       for(final Page page : _pages) {
         _builder.append("\t\t");
-        _builder.append("<\"");
+        _builder.append("<");
         EClass _eClass = page.eClass();
         String _name = _eClass.getName();
         _builder.append(_name, "		");
-        _builder.append("\" name=\"");
+        _builder.append(" name=\"");
         String _title_1 = page.getTitle();
         _builder.append(_title_1, "		");
         _builder.append("\" description=\"");
@@ -82,14 +82,14 @@ public class SurveyDSLGenerator implements IGenerator {
                       EList<Answer> _answers = singleQuestion.getAnswers();
                       for(final Answer answer : _answers) {
                         _builder.append("\t\t");
-                        _builder.append("<\"");
+                        _builder.append("<");
                         EClass _eClass_3 = question.eClass();
                         String _name_3 = _eClass_3.getName();
                         _builder.append(_name_3, "		");
-                        _builder.append("\" name=\"");
+                        _builder.append(" name=\"");
                         String _name_4 = answer.getName();
                         _builder.append(_name_4, "		");
-                        _builder.append("\">");
+                        _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
                     }
@@ -108,17 +108,19 @@ public class SurveyDSLGenerator implements IGenerator {
                       EList<Answer> _answers_1 = multiQuestion.getAnswers();
                       for(final Answer answer_1 : _answers_1) {
                         _builder.append("\t\t");
-                        _builder.append("<\"");
+                        _builder.append("<");
                         EClass _eClass_5 = question.eClass();
                         String _name_6 = _eClass_5.getName();
                         _builder.append(_name_6, "		");
-                        _builder.append("\" name=\"");
+                        _builder.append(" name=\"");
                         String _name_7 = answer_1.getName();
                         _builder.append(_name_7, "		");
-                        _builder.append("\">");
+                        _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
                     }
+                    _builder.append("\t\t");
+                    _builder.newLine();
                   }
                 }
                 {
@@ -131,15 +133,15 @@ public class SurveyDSLGenerator implements IGenerator {
                     final FreetextQuestion freeQuestion = ((FreetextQuestion) question);
                     _builder.newLineIfNotEmpty();
                     _builder.append("\t\t");
-                    _builder.append("<\"");
+                    _builder.append("<");
                     EClass _eClass_7 = question.eClass();
                     String _name_9 = _eClass_7.getName();
                     _builder.append(_name_9, "		");
-                    _builder.append("\" name=\"");
+                    _builder.append(" name=\"");
                     FreetextAnswer _answers_2 = freeQuestion.getAnswers();
                     String _name_10 = _answers_2.getName();
                     _builder.append(_name_10, "		");
-                    _builder.append("\">");
+                    _builder.append("\"/>");
                     _builder.newLineIfNotEmpty();
                   }
                 }
@@ -147,6 +149,13 @@ public class SurveyDSLGenerator implements IGenerator {
             }
           }
         }
+        _builder.append("\t\t");
+        _builder.append("</");
+        EClass _eClass_8 = page.eClass();
+        String _name_11 = _eClass_8.getName();
+        _builder.append(_name_11, "		");
+        _builder.append(">");
+        _builder.newLineIfNotEmpty();
       }
     }
     _builder.append("\t");
