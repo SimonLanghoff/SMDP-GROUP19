@@ -14,6 +14,7 @@ import surveymodel.QuestionPage
 import surveymodel.SingleChoiceQuestion
 import surveymodel.MultiChoiceQuestion
 import surveymodel.FreetextQuestion
+import surveymodel.impl.QuestionPageImpl
 
 /**
  * Generates code from your model files on save.
@@ -27,25 +28,24 @@ class SurveyDSLGenerator implements IGenerator {
 				<pages>
 					«FOR page : pages»
 						<"«page.eClass.name»" name="«page.title»" description="«page.text»">
-						«IF page.eClass instanceof QuestionPage» 
-						// If statement does not evaluate to true!!!
+						«IF page.eClass.name == QuestionPage.simpleName» 
 							«val questionPage = page as QuestionPage»
 							«FOR question : questionPage.questions»
-								«IF question.eClass instanceof SingleChoiceQuestion»
+								«IF question.eClass.name == SingleChoiceQuestion.simpleName»
 									«val singleQuestion = question as SingleChoiceQuestion»
 									«FOR answer : singleQuestion.answers»
-										<"«question.eClass»" name="«singleQuestion.answers»"
+										<"«question.eClass.name»" name="«answer.name»">
 									«ENDFOR»
 								«ENDIF»
-								«IF question.eClass instanceof MultiChoiceQuestion»
+								«IF question.eClass.name == MultiChoiceQuestion.simpleName»
 									«val multiQuestion = question as MultiChoiceQuestion»
 									«FOR answer : multiQuestion.answers»
-										<"«question.eClass»" name="«multiQuestion.answers»"
+										<"«question.eClass.name»" name="«answer.name»">
 									«ENDFOR»
 								«ENDIF»
-								«IF question.eClass instanceof FreetextQuestion»
+								«IF question.eClass.name == FreetextQuestion.simpleName»
 									«val freeQuestion = question as FreetextQuestion»
-									<"«question.eClass»" name="«freeQuestion.answers»"
+									<"«question.eClass.name»" name="«freeQuestion.answers.name»">
 								«ENDIF»
 							«ENDFOR» 
 						«ENDIF»
