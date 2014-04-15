@@ -3,9 +3,25 @@
  */
 package dk.itu.smdp.group19.generator;
 
+import com.google.common.collect.Iterables;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import surveymodel.Answer;
+import surveymodel.FreetextAnswer;
+import surveymodel.FreetextQuestion;
+import surveymodel.MultiChoiceQuestion;
+import surveymodel.Page;
+import surveymodel.Question;
+import surveymodel.QuestionPage;
+import surveymodel.SingleChoiceQuestion;
+import surveymodel.Survey;
 
 /**
  * Generates code from your model files on save.
@@ -14,6 +30,137 @@ import org.eclipse.xtext.generator.IGenerator;
  */
 @SuppressWarnings("all")
 public class SurveyDSLGenerator implements IGenerator {
+  public static CharSequence compileToXml(final Survey it) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<Survey name=\"");
+    String _title = it.getTitle();
+    _builder.append(_title, "");
+    _builder.append("\">");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("<pages>");
+    _builder.newLine();
+    {
+      EList<Page> _pages = it.getPages();
+      for(final Page page : _pages) {
+        _builder.append("\t\t");
+        _builder.append("<\"");
+        EClass _eClass = page.eClass();
+        String _name = _eClass.getName();
+        _builder.append(_name, "		");
+        _builder.append("\" name=\"");
+        String _title_1 = page.getTitle();
+        _builder.append(_title_1, "		");
+        _builder.append("\" description=\"");
+        String _text = page.getText();
+        _builder.append(_text, "		");
+        _builder.append("\">");
+        _builder.newLineIfNotEmpty();
+        {
+          EClass _eClass_1 = page.eClass();
+          if ((_eClass_1 instanceof QuestionPage)) {
+            _builder.append("\t\t");
+            _builder.append("// If statement does not evaluate to true!!!");
+            _builder.newLine();
+            _builder.append("\t\t");
+            _builder.append("\t");
+            final QuestionPage questionPage = ((QuestionPage) page);
+            _builder.newLineIfNotEmpty();
+            {
+              EList<Question> _questions = questionPage.getQuestions();
+              for(final Question question : _questions) {
+                {
+                  EClass _eClass_2 = question.eClass();
+                  if ((_eClass_2 instanceof SingleChoiceQuestion)) {
+                    _builder.append("\t\t");
+                    _builder.append("\t");
+                    final SingleChoiceQuestion singleQuestion = ((SingleChoiceQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    {
+                      EList<Answer> _answers = singleQuestion.getAnswers();
+                      for(final Answer answer : _answers) {
+                        _builder.append("\t\t");
+                        _builder.append("\t");
+                        _builder.append("<\"");
+                        EClass _eClass_3 = question.eClass();
+                        _builder.append(_eClass_3, "			");
+                        _builder.append("\" name=\"");
+                        EList<Answer> _answers_1 = singleQuestion.getAnswers();
+                        _builder.append(_answers_1, "			");
+                        _builder.append("\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  }
+                }
+                {
+                  EClass _eClass_4 = question.eClass();
+                  if ((_eClass_4 instanceof MultiChoiceQuestion)) {
+                    _builder.append("\t\t");
+                    _builder.append("\t");
+                    final MultiChoiceQuestion multiQuestion = ((MultiChoiceQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    {
+                      EList<Answer> _answers_2 = multiQuestion.getAnswers();
+                      for(final Answer answer_1 : _answers_2) {
+                        _builder.append("\t\t");
+                        _builder.append("\t");
+                        _builder.append("<\"");
+                        EClass _eClass_5 = question.eClass();
+                        _builder.append(_eClass_5, "			");
+                        _builder.append("\" name=\"");
+                        EList<Answer> _answers_3 = multiQuestion.getAnswers();
+                        _builder.append(_answers_3, "			");
+                        _builder.append("\"");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                  }
+                }
+                {
+                  EClass _eClass_6 = question.eClass();
+                  if ((_eClass_6 instanceof FreetextQuestion)) {
+                    _builder.append("\t\t");
+                    _builder.append("\t");
+                    final FreetextQuestion freeQuestion = ((FreetextQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t");
+                    _builder.append("<\"");
+                    EClass _eClass_7 = question.eClass();
+                    _builder.append(_eClass_7, "			");
+                    _builder.append("\" name=\"");
+                    FreetextAnswer _answers_4 = freeQuestion.getAnswers();
+                    _builder.append(_answers_4, "			");
+                    _builder.append("\"");
+                    _builder.newLineIfNotEmpty();
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    _builder.append("\t");
+    _builder.append("</pages>");
+    _builder.newLine();
+    _builder.append("</Survey>");
+    _builder.newLine();
+    return _builder;
+  }
+  
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
+    TreeIterator<EObject> _allContents = resource.getAllContents();
+    Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
+    Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
+    for (final Survey e : _filter) {
+      String _title = e.getTitle();
+      String _string = _title.toString();
+      String _plus = ("surveys/" + _string);
+      String _plus_1 = (_plus + ".xml");
+      CharSequence _compileToXml = SurveyDSLGenerator.compileToXml(e);
+      fsa.generateFile(_plus_1, _compileToXml);
+    }
   }
 }
