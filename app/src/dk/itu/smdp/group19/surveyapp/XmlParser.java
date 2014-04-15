@@ -11,6 +11,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.R.attr;
 import android.util.Log;
 
 public class XmlParser {
@@ -21,6 +22,7 @@ public class XmlParser {
 	
 	public XmlParser(String xmlFileDir) {
 		File file = new File(xmlFileDir);
+		
 		if(file.exists() && file.isFile()) {
 			Log.d(TAG, "File found.");
 			
@@ -29,7 +31,7 @@ public class XmlParser {
 			
 			try {
 				parser = factory.newSAXParser();
-				parser.parse(xmlFileDir, handler);
+				parser.parse(file, handler);
 			} catch (ParserConfigurationException e) {
 				e.printStackTrace();
 			} catch (SAXException e) {
@@ -50,23 +52,34 @@ public class XmlParser {
 			}
 
 			@Override
-			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException {
-				Log.d(TAG, "startElement");
+			public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+				super.startElement(uri, localName, qName, attributes);
+				Log.d(TAG, "Element name: " + qName);
+				Log.d(TAG, "Attribute count: " + attributes.getLength());
+				for(int i = 0; i < attributes.getLength(); i++) {
+					Log.d(TAG, "(" + i + ") " + attributes.getQName(i) + " = " + attributes.getValue(i));
+				}
 			}
 
 			@Override
 			public void characters(char[] ch, int start, int length) throws SAXException {
-				Log.d(TAG, "characters");
+				super.characters(ch, start, length);
+				String s = new String(ch, start, length);
+				if(s.trim().length() > 0) {
+					Log.d(TAG, "Element text: " + s);
+				}
 			}
 
 			@Override
 			public void endElement(String uri, String localName, String qName) throws SAXException {
-				Log.d(TAG, "endElement");
+				super.endElement(uri, localName, qName);
+//				Log.d(TAG, "endElement");
 			}
 
 			@Override
 			public void endDocument() throws SAXException {
-				Log.i(TAG, "endDocument");
+				super.endDocument();
+//				Log.d(TAG, "endDocument");
 			}
 		};
 		

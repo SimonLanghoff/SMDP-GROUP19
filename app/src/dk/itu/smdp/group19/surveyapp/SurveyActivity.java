@@ -1,6 +1,7 @@
 package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,8 +11,8 @@ import android.widget.TextView;
 
 public class SurveyActivity extends Activity {
 	public final String TAG = "SurveyActivity";
-	private final File APPDIR = getAppDir();
-	private final String SURVEY_FILE_NAME = "text.xml";
+	private final String APPDIR = getAppDir();
+	private final String SURVEY_FILE_NAME = "test.xml";
 	
 	XmlParser parser;
 	final String xmlFileLocation = "";
@@ -23,24 +24,20 @@ public class SurveyActivity extends Activity {
 		
 		TextView status = (TextView) findViewById(R.id.textViewStatus);
 		
-		String dir = APPDIR.getPath() + "/" + SURVEY_FILE_NAME;
-		Log.d(TAG, dir);
-		File fileDir = new File(APPDIR.getPath());
-		File[] files = fileDir.listFiles();
-		for(File file : files) {
-			Log.d(TAG, file.getName());
-			Log.d(TAG, "file path: " + file.getPath());
-		}
-		XmlParser parser = new XmlParser(dir);
+		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
+		Log.d(TAG, "filePath: " + filePath);
+		File file = new File(filePath);
+		Log.d(TAG, "file exists: " + file.exists());
+		XmlParser parser = new XmlParser(filePath);
 	}
 	
-	public File getAppDir() {
+	public String getAppDir() {
 		if(isExternalStorageReadable()) {
-			File directory = Environment.getExternalStorageDirectory();
-			File appDir = new File(directory, "/SurveyApp");
+			File storageDir = Environment.getExternalStorageDirectory();
+			File appDir = new File(storageDir, "/SurveyApp");
 			Boolean didCreate = appDir.mkdirs();
 			Log.i(TAG, "Created app dir: " + didCreate);
-			return appDir;
+			return appDir.getAbsolutePath();
 		} else {
 			Log.e(TAG, "External storage not available!");
 			return null;
