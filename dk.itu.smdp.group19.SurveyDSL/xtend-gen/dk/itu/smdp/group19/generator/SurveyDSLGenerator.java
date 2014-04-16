@@ -69,26 +69,41 @@ public class SurveyDSLGenerator implements IGenerator {
             {
               EList<Question> _questions = questionPage.getQuestions();
               for(final Question question : _questions) {
+                _builder.append("\t\t");
+                _builder.append("<");
+                EClass _eClass_2 = question.eClass();
+                String _name_2 = _eClass_2.getName();
+                _builder.append(_name_2, "		");
+                _builder.append(" name=\"");
+                String _text_1 = question.getText();
+                _builder.append(_text_1, "		");
+                _builder.append("\"/>");
+                _builder.newLineIfNotEmpty();
                 {
-                  EClass _eClass_2 = question.eClass();
-                  String _name_2 = _eClass_2.getName();
+                  EClass _eClass_3 = question.eClass();
+                  String _name_3 = _eClass_3.getName();
                   String _simpleName_1 = SingleChoiceQuestion.class.getSimpleName();
-                  boolean _equals_1 = Objects.equal(_name_2, _simpleName_1);
+                  boolean _equals_1 = Objects.equal(_name_3, _simpleName_1);
                   if (_equals_1) {
                     _builder.append("\t\t");
+                    _builder.append("\t");
                     final SingleChoiceQuestion singleQuestion = ((SingleChoiceQuestion) question);
                     _builder.newLineIfNotEmpty();
+                    _builder.append("\t\t");
+                    _builder.append("\t");
+                    _builder.newLine();
                     {
                       EList<Answer> _answers = singleQuestion.getAnswers();
                       for(final Answer answer : _answers) {
                         _builder.append("\t\t");
+                        _builder.append("\t");
                         _builder.append("<");
-                        EClass _eClass_3 = question.eClass();
-                        String _name_3 = _eClass_3.getName();
-                        _builder.append(_name_3, "		");
+                        EClass _eClass_4 = answer.eClass();
+                        String _name_4 = _eClass_4.getName();
+                        _builder.append(_name_4, "			");
                         _builder.append(" name=\"");
-                        String _name_4 = answer.getName();
-                        _builder.append(_name_4, "		");
+                        String _name_5 = answer.getName();
+                        _builder.append(_name_5, "			");
                         _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
@@ -96,51 +111,57 @@ public class SurveyDSLGenerator implements IGenerator {
                   }
                 }
                 {
-                  EClass _eClass_4 = question.eClass();
-                  String _name_5 = _eClass_4.getName();
+                  EClass _eClass_5 = question.eClass();
+                  String _name_6 = _eClass_5.getName();
                   String _simpleName_2 = MultiChoiceQuestion.class.getSimpleName();
-                  boolean _equals_2 = Objects.equal(_name_5, _simpleName_2);
+                  boolean _equals_2 = Objects.equal(_name_6, _simpleName_2);
                   if (_equals_2) {
                     _builder.append("\t\t");
+                    _builder.append("\t");
                     final MultiChoiceQuestion multiQuestion = ((MultiChoiceQuestion) question);
                     _builder.newLineIfNotEmpty();
                     {
                       EList<Answer> _answers_1 = multiQuestion.getAnswers();
                       for(final Answer answer_1 : _answers_1) {
                         _builder.append("\t\t");
+                        _builder.append("\t");
                         _builder.append("<");
-                        EClass _eClass_5 = question.eClass();
-                        String _name_6 = _eClass_5.getName();
-                        _builder.append(_name_6, "		");
+                        EClass _eClass_6 = answer_1.eClass();
+                        String _name_7 = _eClass_6.getName();
+                        _builder.append(_name_7, "			");
                         _builder.append(" name=\"");
-                        String _name_7 = answer_1.getName();
-                        _builder.append(_name_7, "		");
+                        String _name_8 = answer_1.getName();
+                        _builder.append(_name_8, "			");
                         _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
                     }
                     _builder.append("\t\t");
+                    _builder.append("\t");
                     _builder.newLine();
                   }
                 }
                 {
-                  EClass _eClass_6 = question.eClass();
-                  String _name_8 = _eClass_6.getName();
+                  EClass _eClass_7 = question.eClass();
+                  String _name_9 = _eClass_7.getName();
                   String _simpleName_3 = FreetextQuestion.class.getSimpleName();
-                  boolean _equals_3 = Objects.equal(_name_8, _simpleName_3);
+                  boolean _equals_3 = Objects.equal(_name_9, _simpleName_3);
                   if (_equals_3) {
                     _builder.append("\t\t");
+                    _builder.append("\t");
                     final FreetextQuestion freeQuestion = ((FreetextQuestion) question);
                     _builder.newLineIfNotEmpty();
                     _builder.append("\t\t");
+                    _builder.append("\t");
                     _builder.append("<");
-                    EClass _eClass_7 = question.eClass();
-                    String _name_9 = _eClass_7.getName();
-                    _builder.append(_name_9, "		");
-                    _builder.append(" name=\"");
                     FreetextAnswer _answers_2 = freeQuestion.getAnswers();
-                    String _name_10 = _answers_2.getName();
-                    _builder.append(_name_10, "		");
+                    EClass _eClass_8 = _answers_2.eClass();
+                    String _name_10 = _eClass_8.getName();
+                    _builder.append(_name_10, "			");
+                    _builder.append(" name=\"");
+                    FreetextAnswer _answers_3 = freeQuestion.getAnswers();
+                    String _name_11 = _answers_3.getName();
+                    _builder.append(_name_11, "			");
                     _builder.append("\"/>");
                     _builder.newLineIfNotEmpty();
                   }
@@ -151,9 +172,9 @@ public class SurveyDSLGenerator implements IGenerator {
         }
         _builder.append("\t\t");
         _builder.append("</");
-        EClass _eClass_8 = page.eClass();
-        String _name_11 = _eClass_8.getName();
-        _builder.append(_name_11, "		");
+        EClass _eClass_9 = page.eClass();
+        String _name_12 = _eClass_9.getName();
+        _builder.append(_name_12, "		");
         _builder.append(">");
         _builder.newLineIfNotEmpty();
       }

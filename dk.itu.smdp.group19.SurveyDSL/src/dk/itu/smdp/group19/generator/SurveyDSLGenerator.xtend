@@ -31,22 +31,24 @@ class SurveyDSLGenerator implements IGenerator {
 						«IF page.eClass.name == QuestionPage.simpleName» 
 							«val questionPage = page as QuestionPage»
 							«FOR question : questionPage.questions»
+							<«question.eClass.name» name="«question.text»"/>
 								«IF question.eClass.name == SingleChoiceQuestion.simpleName»
 									«val singleQuestion = question as SingleChoiceQuestion»
+									
 									«FOR answer : singleQuestion.answers»
-										<«question.eClass.name» name="«answer.name»"/>
+										<«answer.eClass.name» name="«answer.name»"/>
 									«ENDFOR»
 								«ENDIF»
 								«IF question.eClass.name == MultiChoiceQuestion.simpleName»
 									«val multiQuestion = question as MultiChoiceQuestion»
 									«FOR answer : multiQuestion.answers»
-										<«question.eClass.name» name="«answer.name»"/>
+										<«answer.eClass.name» name="«answer.name»"/>
 									«ENDFOR»
 									
 								«ENDIF»
 								«IF question.eClass.name == FreetextQuestion.simpleName»
 									«val freeQuestion = question as FreetextQuestion»
-									<«question.eClass.name» name="«freeQuestion.answers.name»"/>
+									<«freeQuestion.answers.eClass.name» name="«freeQuestion.answers.name»"/>
 								«ENDIF»
 							«ENDFOR» 
 						«ENDIF»
