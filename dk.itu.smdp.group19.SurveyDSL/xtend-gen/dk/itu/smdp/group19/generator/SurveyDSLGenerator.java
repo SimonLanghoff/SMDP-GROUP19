@@ -104,6 +104,9 @@ public class SurveyDSLGenerator implements IGenerator {
                         _builder.append(" name=\"");
                         String _name_5 = answer.getName();
                         _builder.append(_name_5, "			");
+                        _builder.append("\" text=\"");
+                        String _text_2 = answer.getText();
+                        _builder.append(_text_2, "			");
                         _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
@@ -132,6 +135,9 @@ public class SurveyDSLGenerator implements IGenerator {
                         _builder.append(" name=\"");
                         String _name_8 = answer_1.getName();
                         _builder.append(_name_8, "			");
+                        _builder.append("\" text=\"");
+                        String _text_3 = answer_1.getText();
+                        _builder.append(_text_3, "			");
                         _builder.append("\"/>");
                         _builder.newLineIfNotEmpty();
                       }
@@ -162,6 +168,10 @@ public class SurveyDSLGenerator implements IGenerator {
                     FreetextAnswer _answers_3 = freeQuestion.getAnswers();
                     String _name_11 = _answers_3.getName();
                     _builder.append(_name_11, "			");
+                    _builder.append("\" text=\"");
+                    FreetextAnswer _answers_4 = freeQuestion.getAnswers();
+                    String _text_4 = _answers_4.getText();
+                    _builder.append(_text_4, "			");
                     _builder.append("\"/>");
                     _builder.newLineIfNotEmpty();
                   }
@@ -187,17 +197,240 @@ public class SurveyDSLGenerator implements IGenerator {
     return _builder;
   }
   
+  public static CharSequence compileToTex(final Survey it) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("\\documentclass[a4paper,final]{article}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\usepackage{a4wide}");
+    _builder.newLine();
+    _builder.append("\\usepackage[english]{babel}");
+    _builder.newLine();
+    _builder.append("\\usepackage[utf8]{inputenc}");
+    _builder.newLine();
+    _builder.append("\\usepackage[T1]{fontenc}");
+    _builder.newLine();
+    _builder.append("\\usepackage{newtxtext,newtxmath}");
+    _builder.newLine();
+    _builder.append("\\usepackage{fancyhdr}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\\parindent = 0pt");
+    _builder.newLine();
+    _builder.append("\\setlength{\\headheight}{15pt}");
+    _builder.newLine();
+    _builder.append("\\pagestyle{fancy}");
+    _builder.newLine();
+    _builder.append("\\chead{");
+    String _title = it.getTitle();
+    _builder.append(_title, "");
+    _builder.append("}");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("\\begin{document}");
+    _builder.newLine();
+    _builder.newLine();
+    {
+      EList<Page> _pages = it.getPages();
+      for(final Page page : _pages) {
+        _builder.append("\\newpage");
+        _builder.newLine();
+        _builder.append("\\section*{");
+        String _title_1 = page.getTitle();
+        _builder.append(_title_1, "");
+        _builder.append("}");
+        _builder.newLineIfNotEmpty();
+        String _text = page.getText();
+        _builder.append(_text, "");
+        _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        {
+          EClass _eClass = page.eClass();
+          String _name = _eClass.getName();
+          String _simpleName = QuestionPage.class.getSimpleName();
+          boolean _equals = Objects.equal(_name, _simpleName);
+          if (_equals) {
+            final QuestionPage questionPage = ((QuestionPage) page);
+            _builder.newLineIfNotEmpty();
+            {
+              EList<Question> _questions = questionPage.getQuestions();
+              for(final Question question : _questions) {
+                String _text_1 = question.getText();
+                _builder.append(_text_1, "");
+                _builder.newLineIfNotEmpty();
+                {
+                  EClass _eClass_1 = question.eClass();
+                  String _name_1 = _eClass_1.getName();
+                  String _simpleName_1 = SingleChoiceQuestion.class.getSimpleName();
+                  boolean _equals_1 = Objects.equal(_name_1, _simpleName_1);
+                  if (_equals_1) {
+                    _builder.append("\t");
+                    _builder.append("(select one)");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\\begin{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    final SingleChoiceQuestion singleQuestion = ((SingleChoiceQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    {
+                      EList<Answer> _answers = singleQuestion.getAnswers();
+                      for(final Answer answer : _answers) {
+                        _builder.append("\t");
+                        _builder.append("\\item[$\\bigcirc$] ");
+                        String _text_2 = answer.getText();
+                        _builder.append(_text_2, "	");
+                        _builder.newLineIfNotEmpty();
+                        {
+                          EClass _eClass_2 = answer.eClass();
+                          String _name_2 = _eClass_2.getName();
+                          String _simpleName_2 = FreetextAnswer.class.getSimpleName();
+                          boolean _equals_2 = Objects.equal(_name_2, _simpleName_2);
+                          if (_equals_2) {
+                            _builder.append("\t");
+                            _builder.append("\\\\");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("\\fbox{");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("\t");
+                            _builder.append("\\begin{minipage}{5in}");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("\t\t");
+                            _builder.append("\\hfill \\vspace{1in}");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("\t");
+                            _builder.append("\\end{minipage}");
+                            _builder.newLine();
+                            _builder.append("\t");
+                            _builder.append("}");
+                            _builder.newLine();
+                          }
+                        }
+                      }
+                    }
+                    _builder.append("\t");
+                    _builder.append("\\end{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.newLine();
+                  }
+                }
+                {
+                  EClass _eClass_3 = question.eClass();
+                  String _name_3 = _eClass_3.getName();
+                  String _simpleName_3 = MultiChoiceQuestion.class.getSimpleName();
+                  boolean _equals_3 = Objects.equal(_name_3, _simpleName_3);
+                  if (_equals_3) {
+                    _builder.append("\t");
+                    _builder.append("(select one or several)");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\\begin{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    final MultiChoiceQuestion multiQuestion = ((MultiChoiceQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    {
+                      EList<Answer> _answers_1 = multiQuestion.getAnswers();
+                      for(final Answer answer_1 : _answers_1) {
+                        _builder.append("\t");
+                        _builder.append("\\item[$\\bigcirc$] ");
+                        String _text_3 = answer_1.getText();
+                        _builder.append(_text_3, "	");
+                        _builder.newLineIfNotEmpty();
+                      }
+                    }
+                    _builder.append("\t");
+                    _builder.append("\\end{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.newLine();
+                  }
+                }
+                {
+                  EClass _eClass_4 = question.eClass();
+                  String _name_4 = _eClass_4.getName();
+                  String _simpleName_4 = FreetextQuestion.class.getSimpleName();
+                  boolean _equals_4 = Objects.equal(_name_4, _simpleName_4);
+                  if (_equals_4) {
+                    _builder.append("\t");
+                    final FreetextQuestion freeQuestion = ((FreetextQuestion) question);
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\\begin{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\\item[$\\bigcirc$] ");
+                    FreetextAnswer _answers_2 = freeQuestion.getAnswers();
+                    String _text_4 = _answers_2.getText();
+                    _builder.append(_text_4, "	");
+                    _builder.append("\\\\");
+                    _builder.newLineIfNotEmpty();
+                    _builder.append("\t");
+                    _builder.append("\\fbox{");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\t");
+                    _builder.append("\\begin{minipage}{5in}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\t\t");
+                    _builder.append("\\hfill \\vspace{3in}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\t");
+                    _builder.append("\\end{minipage}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.append("\\end{itemize}");
+                    _builder.newLine();
+                    _builder.append("\t");
+                    _builder.newLine();
+                  }
+                }
+                _builder.append("\t");
+                _builder.append("\\vspace{15pt}");
+                _builder.newLine();
+                _builder.append("\t");
+                _builder.newLine();
+              }
+            }
+          }
+        }
+      }
+    }
+    _builder.newLine();
+    _builder.append("\\end{document}");
+    _builder.newLine();
+    return _builder;
+  }
+  
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
     TreeIterator<EObject> _allContents = resource.getAllContents();
     Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
     Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
     for (final Survey e : _filter) {
-      String _title = e.getTitle();
-      String _string = _title.toString();
-      String _plus = ("surveys/" + _string);
-      String _plus_1 = (_plus + ".xml");
-      CharSequence _compileToXml = SurveyDSLGenerator.compileToXml(e);
-      fsa.generateFile(_plus_1, _compileToXml);
+      {
+        String _title = e.getTitle();
+        String _string = _title.toString();
+        String _plus = ("surveys/" + _string);
+        String _plus_1 = (_plus + ".xml");
+        CharSequence _compileToXml = SurveyDSLGenerator.compileToXml(e);
+        fsa.generateFile(_plus_1, _compileToXml);
+        String _title_1 = e.getTitle();
+        String _string_1 = _title_1.toString();
+        String _plus_2 = ("surveys/" + _string_1);
+        String _plus_3 = (_plus_2 + ".tex");
+        CharSequence _compileToTex = SurveyDSLGenerator.compileToTex(e);
+        fsa.generateFile(_plus_3, _compileToTex);
+      }
     }
   }
 }
