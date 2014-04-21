@@ -140,7 +140,10 @@ class SurveyDSLGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		for(e: resource.allContents.toIterable.filter(Survey)) {
 			fsa.generateFile("surveys/" + e.title.toString() + ".xml", e.compileToXml)
-			fsa.generateFile("surveys/" + e.title.toString() + ".tex", e.compileToTex)
+			
+			val texFile = "surveys/" + e.title.toString + ".tex"
+			fsa.generateFile(texFile, e.compileToTex)
+			Runtime.runtime.exec("pdflatex " + texFile) // TODO: maybe this is not the correct path in relation to pdftex
 		}
 	}
 }

@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import surveymodel.Answer;
 import surveymodel.FreetextAnswer;
@@ -413,24 +414,31 @@ public class SurveyDSLGenerator implements IGenerator {
   }
   
   public void doGenerate(final Resource resource, final IFileSystemAccess fsa) {
-    TreeIterator<EObject> _allContents = resource.getAllContents();
-    Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
-    Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
-    for (final Survey e : _filter) {
-      {
-        String _title = e.getTitle();
-        String _string = _title.toString();
-        String _plus = ("surveys/" + _string);
-        String _plus_1 = (_plus + ".xml");
-        CharSequence _compileToXml = SurveyDSLGenerator.compileToXml(e);
-        fsa.generateFile(_plus_1, _compileToXml);
-        String _title_1 = e.getTitle();
-        String _string_1 = _title_1.toString();
-        String _plus_2 = ("surveys/" + _string_1);
-        String _plus_3 = (_plus_2 + ".tex");
-        CharSequence _compileToTex = SurveyDSLGenerator.compileToTex(e);
-        fsa.generateFile(_plus_3, _compileToTex);
+    try {
+      TreeIterator<EObject> _allContents = resource.getAllContents();
+      Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
+      Iterable<Survey> _filter = Iterables.<Survey>filter(_iterable, Survey.class);
+      for (final Survey e : _filter) {
+        {
+          String _title = e.getTitle();
+          String _string = _title.toString();
+          String _plus = ("surveys/" + _string);
+          String _plus_1 = (_plus + ".xml");
+          CharSequence _compileToXml = SurveyDSLGenerator.compileToXml(e);
+          fsa.generateFile(_plus_1, _compileToXml);
+          String _title_1 = e.getTitle();
+          String _string_1 = _title_1.toString();
+          String _plus_2 = ("surveys/" + _string_1);
+          final String texFile = (_plus_2 + ".tex");
+          CharSequence _compileToTex = SurveyDSLGenerator.compileToTex(e);
+          fsa.generateFile(texFile, _compileToTex);
+          Runtime _runtime = Runtime.getRuntime();
+          String _plus_3 = ("pdflatex " + texFile);
+          _runtime.exec(_plus_3);
+        }
       }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
   }
 }
