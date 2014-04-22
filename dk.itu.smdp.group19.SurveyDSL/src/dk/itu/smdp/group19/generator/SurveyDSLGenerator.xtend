@@ -16,6 +16,11 @@ import surveymodel.MultiChoiceQuestion
 import surveymodel.FreetextQuestion
 import surveymodel.impl.QuestionPageImpl
 import surveymodel.FreetextAnswer
+import surveymodel.Dependency
+import surveymodel.Not
+import surveymodel.And
+import surveymodel.Or
+import surveymodel.AnswerRef
 
 /**
  * Generates code from your model files on save.
@@ -25,38 +30,70 @@ import surveymodel.FreetextAnswer
 class SurveyDSLGenerator implements IGenerator {
 	def static compileToXml(Survey it) {
 		'''
-			<Survey name="«it.title»">
+			<Survey name="«title»">
 				<pages>
 					«FOR page : pages»
-						<«page.eClass.name» name="«page.title»" description="«page.text»">
+						<«page.eClass.name» name="«page.title»" text="«page.text»">
 						«IF page.eClass.name == QuestionPage.simpleName» 
 							«val questionPage = page as QuestionPage»
 							«FOR question : questionPage.questions»
-							<«question.eClass.name» name="«question.text»"/>
+								<«question.eClass.name» name="«question.text»" optional="«question.optional»">
 								«IF question.eClass.name == SingleChoiceQuestion.simpleName»
 									«val singleQuestion = question as SingleChoiceQuestion»
-									
 									«FOR answer : singleQuestion.answers»
 										<«answer.eClass.name» name="«answer.name»" text="«answer.text»"/>
 									«ENDFOR»
-								«ENDIF»
-								«IF question.eClass.name == MultiChoiceQuestion.simpleName»
+								«ELSEIF question.eClass.name == MultiChoiceQuestion.simpleName»
 									«val multiQuestion = question as MultiChoiceQuestion»
 									«FOR answer : multiQuestion.answers»
 										<«answer.eClass.name» name="«answer.name»" text="«answer.text»"/>
 									«ENDFOR»
-									
-								«ENDIF»
-								«IF question.eClass.name == FreetextQuestion.simpleName»
+								«ELSEIF question.eClass.name == FreetextQuestion.simpleName»
 									«val freeQuestion = question as FreetextQuestion»
 									<«freeQuestion.answers.eClass.name» name="«freeQuestion.answers.name»" text="«freeQuestion.answers.text»"/>
 								«ENDIF»
-							«ENDFOR» 
+								
+								«IF question.requires != null»
+									<Requires>
+									«compileDependencyToXml(question.requires)»
+									</Requires>
+								«ENDIF»
+								</«question.eClass.name»>
+							«ENDFOR»
 						«ENDIF»
 						</«page.eClass.name»>
 					«ENDFOR»
 				</pages>
 			</Survey>
+		'''
+	}
+	
+	def static String compileDependencyToXml(Dependency it) {
+		if (it == null)
+			return ""
+		
+		'''
+			«IF it.eClass.name == Not.simpleName»
+				«val not = it as Not»
+				<Not>
+				«compileDependencyToXml(not.dependency)»
+				</Not>
+			«ELSEIF it.eClass.name == And.simpleName»
+				«val and = it as And»
+				<And>
+				«compileDependencyToXml(and.lhs)»
+				«compileDependencyToXml(and.rhs)»
+				</And>
+			«ELSEIF it.eClass.name == Or.simpleName»
+				«val or = it as Or»
+				<Or>
+				«compileDependencyToXml(or.lhs)»
+				«compileDependencyToXml(or.rhs)»
+				</Or>
+			«ELSEIF it.eClass.name == AnswerRef.simpleName»
+				«val ref = it as AnswerRef»
+				<AnswerRef name="«ref.refers.name»" />
+			«ENDIF»
 		'''
 	}
 	
@@ -83,10 +120,18 @@ class SurveyDSLGenerator implements IGenerator {
 				\section*{«page.title»}
 				«page.text»
 				
+				\vspace{15pt}
+				
 				«IF page.eClass.name == QuestionPage.simpleName» 
 					«val questionPage = page as QuestionPage»
 					«FOR question : questionPage.questions»
 					«question.text»
+					«IF question.optional»
+						(optional)
+					«ENDIF»
+					«IF question.requires != null»
+						(to answer this question, you must have answered «compileDependencyToTex(question.requires)»)
+					«ENDIF»
 						«IF question.eClass.name == SingleChoiceQuestion.simpleName»
 							(select one)
 							\begin{itemize}
@@ -104,8 +149,7 @@ class SurveyDSLGenerator implements IGenerator {
 							«ENDFOR»
 							\end{itemize}
 							
-						«ENDIF»
-						«IF question.eClass.name == MultiChoiceQuestion.simpleName»
+						«ELSEIF question.eClass.name == MultiChoiceQuestion.simpleName»
 							(select one or several)
 							\begin{itemize}
 							«val multiQuestion = question as MultiChoiceQuestion»
@@ -114,8 +158,7 @@ class SurveyDSLGenerator implements IGenerator {
 							«ENDFOR»
 							\end{itemize}
 							
-						«ENDIF»
-						«IF question.eClass.name == FreetextQuestion.simpleName»
+						«ELSEIF question.eClass.name == FreetextQuestion.simpleName»
 							«val freeQuestion = question as FreetextQuestion»
 							\begin{itemize}
 							\item[$\bigcirc$] «freeQuestion.answers.text»\\
@@ -134,6 +177,27 @@ class SurveyDSLGenerator implements IGenerator {
 			«ENDFOR»
 			
 			\end{document}
+		'''
+	}
+	
+	def static String compileDependencyToTex(Dependency it) {
+		if (it == null)
+			return ""
+		
+		'''
+			«IF it.eClass.name == Not.simpleName»
+				«val not = it as Not»
+				not «compileDependencyToTex(not.dependency)»
+			«ELSEIF it.eClass.name == And.simpleName»
+				«val and = it as And»
+				«compileDependencyToTex(and.lhs)» and «compileDependencyToTex(and.rhs)»
+			«ELSEIF it.eClass.name == Or.simpleName»
+				«val or = it as Or»
+				«compileDependencyToTex(or.lhs)» or «compileDependencyToTex(or.rhs)»
+			«ELSEIF it.eClass.name == AnswerRef.simpleName»
+				«val ref = it as AnswerRef»
+				«ref.refers.text»
+			«ENDIF»
 		'''
 	}
 	
