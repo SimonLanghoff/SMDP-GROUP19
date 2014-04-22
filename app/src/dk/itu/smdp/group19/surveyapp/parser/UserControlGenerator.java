@@ -46,7 +46,10 @@ public class UserControlGenerator {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(!hasFocus) {
-					acl.onAnswerChanged(answer, et);
+					// check if text field actually has content
+					if(((EditText) v).getText().toString().trim().length() > 0) {
+						acl.onAnswerChanged(answer, et);
+					}
 				}
 			}
 		});
