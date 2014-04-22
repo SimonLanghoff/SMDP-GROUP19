@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
-    
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -28,6 +28,10 @@
         <activity
             android:name="dk.itu.smdp.group19.surveyapp.SurveyActivity"
             android:label="@string/title_activity_survey" >
+        </activity>
+        <activity
+            android:name="dk.itu.smdp.group19.surveyapp.SendEmailActivity"
+            android:label="@string/title_activity_send_email" >
         </activity>
     </application>
 

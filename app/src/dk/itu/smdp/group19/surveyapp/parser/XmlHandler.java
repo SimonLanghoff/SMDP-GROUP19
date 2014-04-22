@@ -21,7 +21,7 @@ public class XmlHandler extends DefaultHandler {
 	private Question currentQuestion;
 	
 	private int questionId = 0;
-	private int answerId = 0;
+	private int answerId = 0; 
 	
 	public Survey getSurvey() {
 		return survey;

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
@@ -40,17 +41,27 @@ public class UserControlGenerator {
 	private EditText makeFreetextAnswer(final Answer answer, final AnswerChangeListener acl) {
 		final EditText et = new EditText(context);
 		et.setHint(answer.getName());
-		et.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) { /* do nothing */ }
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* do nothing */ }
+		et.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
-			public void afterTextChanged(Editable s) {
-				acl.onAnswerChanged(answer, et);
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus) {
+					acl.onAnswerChanged(answer, et);
+				}
 			}
 		});
+		
+//		et.addTextChangedListener(new TextWatcher() {
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before, int count) { /* do nothing */ }
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* do nothing */ }
+//			
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				acl.onAnswerChanged(answer, et);
+//			}
+//		});
 		
 		return et;
 	}
@@ -84,21 +95,26 @@ public class UserControlGenerator {
 //		lparams.addRule(RelativeLayout.CENTER_VERTICAL); // center text box, i hope
 		
 		for(final Answer answer : answers) {
-			final CheckBox cb = makeCheckBox(answer.getName());
-			ll.addView(cb);
-			
 			if(answer.isFreetext()) {
 				// add textbox
+				TextView tv = new TextView(context);
+				tv.setText("Other: ");
+				ll.addView(tv);
+				
 				EditText et = makeFreetextAnswer(answer, acl);
 				ll.addView(et);
 			}
-			
-			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					acl.onAnswerChanged(answer, cb);
-				}
-			});
+			else {
+				final CheckBox cb = makeCheckBox(answer.getName());
+				ll.addView(cb);
+				
+				cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						acl.onAnswerChanged(answer, cb);
+					}
+				});
+			}
 		}
 		
 		return ll;

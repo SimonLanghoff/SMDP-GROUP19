@@ -3,17 +3,22 @@ package dk.itu.smdp.group19.surveyapp;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import dk.itu.smdp.group19.surveyapp.parser.AnswerChangeListener;
+import dk.itu.smdp.group19.surveyapp.parser.DefaultAnswerChangeListener;
 import dk.itu.smdp.group19.surveyapp.parser.UserControlGenerator;
 import dk.itu.smdp.group19.surveyapp.parser.XmlParser;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Page;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionPage;
@@ -25,8 +30,6 @@ public class SurveyActivity extends Activity {
 	private final String APPDIR = getAppDir();
 	private final String SURVEY_FILE_NAME = "brandts_survey.xml";
 	
-	XmlParser parser;
-	final String xmlFileLocation = "";
 	private UserControlGenerator controlGenerator;
 	
 	@Override
@@ -45,6 +48,8 @@ public class SurveyActivity extends Activity {
 		if(survey != null) {
 			generateSurvey(survey);
 		}
+		
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
 	private void generateSurvey(Survey survey) {
@@ -63,45 +68,35 @@ public class SurveyActivity extends Activity {
 				for(Question question : questionPage.getQuestions()) {
 					layout.addView(controlGenerator.makeQuestionHeader(question));
 					
-//					Map<String, Boolean> answersMap = new HashMap<String, Boolean>();
-//					for(Answer answer : question.getAnswers()) {
-//						answersMap.put(answer.getId() + "_" + answer.getName(), answer.isFreetext());
-//					}
-					
 					ViewGroup answers = null;
 					
 					if(question.getType() == QuestionType.SINGLE) {
-						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new AnswerChangeListener() {
-							@Override
-							public void onAnswerChanged(Answer answer, View answerView) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
+						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
 					}
 					else if(question.getType() == QuestionType.MULTI) {
-						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new AnswerChangeListener() {
-							@Override
-							public void onAnswerChanged(Answer answer, View answerView) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
+						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
 					}
 					else if(question.getType() == QuestionType.FREETEXT) {
-						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new AnswerChangeListener() {
-							@Override
-							public void onAnswerChanged(Answer answer, View answerView) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
+						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
 					}
 					
 					layout.addView(answers);
 				}
 			}
 		}
+		
+		Button buttonSend = new Button(this);
+		buttonSend.setText("Send");
+		buttonSend.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				
+				Intent i = new Intent(v.getContext(), SendEmailActivity.class);
+				startActivity(i);
+			}
+		});
+		layout.addView(buttonSend);
 	}
 	
 	
