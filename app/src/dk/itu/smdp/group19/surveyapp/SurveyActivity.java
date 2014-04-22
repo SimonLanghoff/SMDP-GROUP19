@@ -1,22 +1,25 @@
 package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import dk.itu.smdp.group19.surveyapp.parser.AnswerChangeListener;
+import dk.itu.smdp.group19.surveyapp.parser.UserControlGenerator;
 import dk.itu.smdp.group19.surveyapp.parser.XmlParser;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Page;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionPage;
+import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionType;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
 
 public class SurveyActivity extends Activity {
@@ -26,6 +29,7 @@ public class SurveyActivity extends Activity {
 	
 	XmlParser parser;
 	final String xmlFileLocation = "";
+	private UserControlGenerator controlGenerator;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,9 @@ public class SurveyActivity extends Activity {
 		setContentView(R.layout.activity_survey);
 		
 		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
-		File file = new File(filePath);
+//		File file = new File(filePath);
+		
+		controlGenerator = new UserControlGenerator(this);
 		
 		XmlParser parser = new XmlParser(filePath);
 		Survey survey = parser.parse();
@@ -50,59 +56,56 @@ public class SurveyActivity extends Activity {
 		surveyTitle.setText(survey.getTitle());
 		layout.addView(surveyTitle);
 		
-		makeRuler(layout, Color.BLACK);
-		
 		for(Page page : survey.getPages()) {
-			makePageHeader(layout, page);
-			
-			makeRuler(layout, Color.RED);
+			layout.addView(controlGenerator.makePageHeader(page));
 			
 			if(page.getClass() == QuestionPage.class) {
 				QuestionPage questionPage = (QuestionPage) page;
 				
 				for(Question question : questionPage.getQuestions()) {
-					makeQuestionHeader(layout, question);a
+					layout.addView(controlGenerator.makeQuestionHeader(question));
 					
-					makeRuler(layout, Color.BLUE);
-					
+					Map<String, Boolean> answersMap = new HashMap<String, Boolean>();
 					for(Answer answer : question.getAnswers()) {
-						TextView answerName = new TextView(this);
-						answerName.setText(answer.getName());
-						layout.addView(answerName);
-						
-						makeRuler(layout, Color.BLUE);
+						answersMap.put(answer.getName(), answer.isFreetext());
 					}
 					
-					makeRuler(layout, Color.RED);
+					ViewGroup answers = null;
+					
+					if(question.getType() == QuestionType.SINGLE) {
+						answers = controlGenerator.makeSingleChoiceAnswers(answersMap, new AnswerChangeListener() {
+							@Override
+							public void onAnswerChanged(String answerText, View answerView) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+					}
+					else if(question.getType() == QuestionType.MULTI) {
+						answers = controlGenerator.makeMultiChoiceAnswers(answersMap, new AnswerChangeListener() {
+							@Override
+							public void onAnswerChanged(String answerText, View answerView) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+					}
+					else if(question.getType() == QuestionType.FREETEXT) {
+						answers = controlGenerator.makeFreetextAnswers(answersMap, new AnswerChangeListener() {
+							@Override
+							public void onAnswerChanged(String answerText, View answerView) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+					}
+					
+					layout.addView(answers);
 				}
 			}
-			
-			makeRuler(layout, Color.BLACK);
 		}
 	}
 	
-	private void makeRuler(LinearLayout parent, int color) {
-		View ruler = new View(this);
-		ruler.setBackgroundColor(color);
-		
-		parent.addView(ruler, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
-	}
-	
-	private void makePageHeader(LinearLayout parent, Page page) {
-		TextView pageTitle = new TextView(this);
-		pageTitle.setText(page.getName());
-		parent.addView(pageTitle);
-		
-		TextView pageDescription = new TextView(this);
-		pageDescription.setText(page.getDescription());
-		parent.addView(pageDescription);
-	}
-	
-	private void makeQuestionHeader(LinearLayout parent, Question question) {
-		TextView questionName = new TextView(this);
-		questionName.setText(question.getName());
-		parent.addView(questionName);
-	}
 	
 	public String getAppDir() {
 		if(isExternalStorageReadable()) {
