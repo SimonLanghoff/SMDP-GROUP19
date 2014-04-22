@@ -5,8 +5,8 @@ public class Answer {
 	private String name;
 	private AnswerType type;
 	
-	public Answer(int id, String name, AnswerType type) {
-		this.id = id;
+	public Answer(int answerId, int questionId, String name, AnswerType type) {
+		this.id = answerId;
 		this.name = name;
 		this.type = type;
 	}

@@ -1,7 +1,6 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.Editable;
@@ -17,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Page;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 
@@ -37,9 +37,9 @@ public class UserControlGenerator {
 	 * @param acl The event handler for when the answer is changed.
 	 * @return A TextEdit instance.
 	 */
-	private EditText makeFreetextAnswer(String hint, final AnswerChangeListener acl) {
+	private EditText makeFreetextAnswer(final Answer answer, final AnswerChangeListener acl) {
 		final EditText et = new EditText(context);
-		et.setHint(hint);
+		et.setHint(answer.getName());
 		et.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) { /* do nothing */ }
@@ -48,22 +48,22 @@ public class UserControlGenerator {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				acl.onAnswerChanged(et.getText().toString(), et);
+				acl.onAnswerChanged(answer, et);
 			}
 		});
 		
 		return et;
 	}
 	
-	public ViewGroup makeFreetextAnswers(Map<String, Boolean> answers, final AnswerChangeListener acl) {
+	public ViewGroup makeFreetextAnswers(ArrayList<Answer> answers, final AnswerChangeListener acl) {
 		LinearLayout ll = new LinearLayout(context);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		ll.setLayoutParams(lparams);
 //		lparams.addRule(RelativeLayout.CENTER_VERTICAL); // center text box, i hope
 		
-		for(Entry<String, Boolean> answer : answers.entrySet()) {
-			EditText et = makeFreetextAnswer(answer.getKey(), acl);
+		for(Answer answer : answers) {
+			EditText et = makeFreetextAnswer(answer, acl);
 			ll.addView(et);
 		}
 		
@@ -76,43 +76,34 @@ public class UserControlGenerator {
 	 * @param acl The event handler.
 	 * @return A ViewGroup of the answers containing checkboxes.
 	 */
-	public ViewGroup makeMultiChoiceAnswers(Map<String, Boolean> answers, final AnswerChangeListener acl) {
+	public ViewGroup makeMultiChoiceAnswers(ArrayList<Answer> answers, final AnswerChangeListener acl) {
 		LinearLayout ll = new LinearLayout(context);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		ll.setLayoutParams(lparams);
 //		lparams.addRule(RelativeLayout.CENTER_VERTICAL); // center text box, i hope
 		
-		for(Entry<String, Boolean> answer : answers.entrySet()) {
-			final CheckBox cb = makeCheckBox(answer.getKey());
+		for(final Answer answer : answers) {
+			final CheckBox cb = makeCheckBox(answer.getName());
 			ll.addView(cb);
 			
-			boolean isFreetext = answer.getValue();
-			
-			if(isFreetext) {
+			if(answer.isFreetext()) {
 				// add textbox
-				EditText et = makeFreetextAnswer("", acl);
+				EditText et = makeFreetextAnswer(answer, acl);
 				ll.addView(et);
-				
-				cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						acl.onAnswerChanged(cb.getText().toString(), cb);
-					}
-				});
 			}
-			else {
-				cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						acl.onAnswerChanged(cb.getText().toString(), cb);
-					}
-				});
-			}
+			
+			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					acl.onAnswerChanged(answer, cb);
+				}
+			});
 		}
 		
 		return ll;
 	}
+	
 	
 	/**
 	 * Creates a single choice answer group where each answer may be a pre-defined answer or a free-text answer.
@@ -120,38 +111,27 @@ public class UserControlGenerator {
 	 * @param acl The event handler.
 	 * @return A ViewGroup of the answers containing radio buttons.
 	 */
-	public ViewGroup makeSingleChoiceAnswers(Map<String, Boolean> answers, final AnswerChangeListener acl) {
+	public ViewGroup makeSingleChoiceAnswers(ArrayList<Answer> answers, final AnswerChangeListener acl) {
 		LinearLayout ll = new LinearLayout(context);
 		RadioGroup rg = new RadioGroup(context);
 		
-		for(Entry<String, Boolean> answer : answers.entrySet()) {
-			final RadioButton rb = makeRadioButton(answer.getKey());
+		for(final Answer answer : answers) {
+			final RadioButton rb = makeRadioButton(answer.getName());
 			rg.addView(rb);
 			
-			boolean isFreetext = answer.getValue();
-			
-			if(isFreetext) {
+			if(answer.isFreetext()) {
 				// add textbox
-				EditText et = makeFreetextAnswer("", acl);
+				EditText et = makeFreetextAnswer(answer, acl);
 				ll.addView(et);
-				
-				rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						if(isChecked)
-							acl.onAnswerChanged(rb.getText().toString(), rb);
-					}
-				});
 			}
-			else {
-				rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						if(isChecked)
-							acl.onAnswerChanged(rb.getText().toString(), rb);
-					}
-				});
-			}
+			
+			rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked)
+						acl.onAnswerChanged(answer, rb);
+				}
+			});
 		}
 		
 		return rg;

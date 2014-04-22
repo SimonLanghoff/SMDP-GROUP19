@@ -1,8 +1,6 @@
 package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,7 +23,7 @@ import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
 public class SurveyActivity extends Activity {
 	public final String TAG = "SurveyActivity";
 	private final String APPDIR = getAppDir();
-	private final String SURVEY_FILE_NAME = "SampleSurvey.xml";
+	private final String SURVEY_FILE_NAME = "brandts_survey.xml";
 	
 	XmlParser parser;
 	final String xmlFileLocation = "";
@@ -65,35 +63,35 @@ public class SurveyActivity extends Activity {
 				for(Question question : questionPage.getQuestions()) {
 					layout.addView(controlGenerator.makeQuestionHeader(question));
 					
-					Map<String, Boolean> answersMap = new HashMap<String, Boolean>();
-					for(Answer answer : question.getAnswers()) {
-						answersMap.put(answer.getName(), answer.isFreetext());
-					}
+//					Map<String, Boolean> answersMap = new HashMap<String, Boolean>();
+//					for(Answer answer : question.getAnswers()) {
+//						answersMap.put(answer.getId() + "_" + answer.getName(), answer.isFreetext());
+//					}
 					
 					ViewGroup answers = null;
 					
 					if(question.getType() == QuestionType.SINGLE) {
-						answers = controlGenerator.makeSingleChoiceAnswers(answersMap, new AnswerChangeListener() {
+						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new AnswerChangeListener() {
 							@Override
-							public void onAnswerChanged(String answerText, View answerView) {
+							public void onAnswerChanged(Answer answer, View answerView) {
 								// TODO Auto-generated method stub
 								
 							}
 						});
 					}
 					else if(question.getType() == QuestionType.MULTI) {
-						answers = controlGenerator.makeMultiChoiceAnswers(answersMap, new AnswerChangeListener() {
+						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new AnswerChangeListener() {
 							@Override
-							public void onAnswerChanged(String answerText, View answerView) {
+							public void onAnswerChanged(Answer answer, View answerView) {
 								// TODO Auto-generated method stub
 								
 							}
 						});
 					}
 					else if(question.getType() == QuestionType.FREETEXT) {
-						answers = controlGenerator.makeFreetextAnswers(answersMap, new AnswerChangeListener() {
+						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new AnswerChangeListener() {
 							@Override
-							public void onAnswerChanged(String answerText, View answerView) {
+							public void onAnswerChanged(Answer answer, View answerView) {
 								// TODO Auto-generated method stub
 								
 							}

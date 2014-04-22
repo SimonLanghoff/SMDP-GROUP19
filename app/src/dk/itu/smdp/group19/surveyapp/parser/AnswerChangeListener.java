@@ -1,6 +1,7 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
 import android.view.View;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 
 /**
  * Interface for receiving an event when the user changes an answer to a question,
@@ -14,5 +15,5 @@ import android.view.View;
  * @author per
  */
 public interface AnswerChangeListener {
-	public void onAnswerChanged(String answerText, View answerView);
+	public void onAnswerChanged(Answer answer, View answerView);
 }

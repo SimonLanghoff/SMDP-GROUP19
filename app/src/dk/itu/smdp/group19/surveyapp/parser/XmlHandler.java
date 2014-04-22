@@ -20,6 +20,9 @@ public class XmlHandler extends DefaultHandler {
 	private QuestionPage currentPage;
 	private Question currentQuestion;
 	
+	private int questionId = 0;
+	private int answerId = 0;
+	
 	public Survey getSurvey() {
 		return survey;
 	}
@@ -57,34 +60,34 @@ public class XmlHandler extends DefaultHandler {
 		else if(qName.equals(ElementNames.SINGLE_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			
-			Question question = new Question(questionName, QuestionType.SINGLE);
+			Question question = new Question(++questionId, questionName, QuestionType.SINGLE);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.MULTI_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			
-			Question question = new Question(questionName, QuestionType.MULTI);
+			Question question = new Question(++questionId, questionName, QuestionType.MULTI);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			
-			Question question = new Question(questionName, QuestionType.FREETEXT);
+			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.CHOICE_ANSWER)) {
 			String answerName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			
-			Answer answer = new Answer(answerName, AnswerType.CHOICE);
+			Answer answer = new Answer(++answerId, currentQuestion.getId(), answerName, AnswerType.CHOICE);
 			currentQuestion.addAnswer(answer);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_ANSWER)) {
 			String answerName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			
-			Answer answer = new Answer(answerName, AnswerType.FREETEXT);
+			Answer answer = new Answer(++answerId, currentQuestion.getId(), answerName, AnswerType.FREETEXT);
 			currentQuestion.addAnswer(answer);
 		}
 	}
