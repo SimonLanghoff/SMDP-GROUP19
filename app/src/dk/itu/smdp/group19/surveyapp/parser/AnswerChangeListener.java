@@ -1,4 +1,4 @@
-package dk.itu.smdp.group19.surveyapp;
+package dk.itu.smdp.group19.surveyapp.parser;
 
 import android.view.View;
 

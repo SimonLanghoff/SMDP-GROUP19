@@ -8,11 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SurveyActivity" >
 
-    <TextView
-        android:id="@+id/textViewStatus"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
-
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" >
+    </LinearLayout>
+    
 </RelativeLayout>

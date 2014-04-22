@@ -1,18 +1,28 @@
 package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import dk.itu.smdp.group19.surveyapp.parser.XmlParser;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Page;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
+import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionPage;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
 
 public class SurveyActivity extends Activity {
 	public final String TAG = "SurveyActivity";
 	private final String APPDIR = getAppDir();
-	private final String SURVEY_FILE_NAME = "test.xml";
+	private final String SURVEY_FILE_NAME = "SampleSurvey.xml";
 	
 	XmlParser parser;
 	final String xmlFileLocation = "";
@@ -22,13 +32,76 @@ public class SurveyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_survey);
 		
-		TextView status = (TextView) findViewById(R.id.textViewStatus);
-		
 		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
-		Log.d(TAG, "filePath: " + filePath);
 		File file = new File(filePath);
-		Log.d(TAG, "file exists: " + file.exists());
+		
 		XmlParser parser = new XmlParser(filePath);
+		Survey survey = parser.parse();
+		
+		if(survey != null) {
+			generateSurvey(survey);
+		}
+	}
+	
+	private void generateSurvey(Survey survey) {
+		LinearLayout layout = (LinearLayout) findViewById(R.id.root);
+		
+		TextView surveyTitle = new TextView(this);
+		surveyTitle.setText(survey.getTitle());
+		layout.addView(surveyTitle);
+		
+		makeRuler(layout, Color.BLACK);
+		
+		for(Page page : survey.getPages()) {
+			makePageHeader(layout, page);
+			
+			makeRuler(layout, Color.RED);
+			
+			if(page.getClass() == QuestionPage.class) {
+				QuestionPage questionPage = (QuestionPage) page;
+				
+				for(Question question : questionPage.getQuestions()) {
+					makeQuestionHeader(layout, question);a
+					
+					makeRuler(layout, Color.BLUE);
+					
+					for(Answer answer : question.getAnswers()) {
+						TextView answerName = new TextView(this);
+						answerName.setText(answer.getName());
+						layout.addView(answerName);
+						
+						makeRuler(layout, Color.BLUE);
+					}
+					
+					makeRuler(layout, Color.RED);
+				}
+			}
+			
+			makeRuler(layout, Color.BLACK);
+		}
+	}
+	
+	private void makeRuler(LinearLayout parent, int color) {
+		View ruler = new View(this);
+		ruler.setBackgroundColor(color);
+		
+		parent.addView(ruler, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
+	}
+	
+	private void makePageHeader(LinearLayout parent, Page page) {
+		TextView pageTitle = new TextView(this);
+		pageTitle.setText(page.getName());
+		parent.addView(pageTitle);
+		
+		TextView pageDescription = new TextView(this);
+		pageDescription.setText(page.getDescription());
+		parent.addView(pageDescription);
+	}
+	
+	private void makeQuestionHeader(LinearLayout parent, Question question) {
+		TextView questionName = new TextView(this);
+		questionName.setText(question.getName());
+		parent.addView(questionName);
 	}
 	
 	public String getAppDir() {
