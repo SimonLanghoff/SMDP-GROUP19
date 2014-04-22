@@ -3,7 +3,6 @@ package dk.itu.smdp.group19.surveyapp;
 import java.io.File;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,11 +85,10 @@ public class SurveyActivity extends Activity {
 		
 		Button buttonSend = new Button(this);
 		buttonSend.setText("Send");
-		buttonSend.setFocusable(true);
 		buttonSend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				v.requestFocus();
+				removeFocusFromAllElements();
 				
 				Intent i = new Intent(v.getContext(), SendEmailActivity.class);
 				startActivity(i);
@@ -100,6 +97,14 @@ public class SurveyActivity extends Activity {
 		layout.addView(buttonSend);
 	}
 	
+	private void removeFocusFromAllElements() {
+		LinearLayout ll = (LinearLayout) findViewById(R.id.root);
+		
+		for(int i = 0; i < ll.getChildCount(); i++) {
+			View v = ll.getChildAt(i);
+			v.clearFocus();
+		}
+	}
 	
 	public String getAppDir() {
 		if(isExternalStorageReadable()) {

@@ -3,7 +3,7 @@ package dk.itu.smdp.group19.surveyapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import dk.itu.smdp.group19.surveyapp.parser.elements.AnswerCollector;
+import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 
 public class SendEmailActivity extends Activity {
 	public final String TAG = "SendEmailActivity";
