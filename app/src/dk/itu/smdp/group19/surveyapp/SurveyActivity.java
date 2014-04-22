@@ -87,10 +87,11 @@ public class SurveyActivity extends Activity {
 		
 		Button buttonSend = new Button(this);
 		buttonSend.setText("Send");
+		buttonSend.setFocusable(true);
 		buttonSend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				v.requestFocus();
 				
 				Intent i = new Intent(v.getContext(), SendEmailActivity.class);
 				startActivity(i);
