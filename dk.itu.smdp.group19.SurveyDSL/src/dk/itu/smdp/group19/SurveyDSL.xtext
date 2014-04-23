@@ -110,3 +110,5 @@ FreetextAnswer returns FreetextAnswer:
 	'answer text'
 	name = ID ':'
 	text = EString;
+
+terminal ML_COMMENT: '[' -> ']';
