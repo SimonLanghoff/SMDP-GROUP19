@@ -2,6 +2,8 @@ package dk.itu.smdp.group19.surveyapp.parser.elements;
 
 import java.util.ArrayList;
 
+import android.view.ViewGroup;
+
 public class Question {
 	private int id;
 	private String name;
@@ -9,6 +11,7 @@ public class Question {
 	private ArrayList<Answer> answers;
 	private Dependency requires;
 	private boolean optional;
+	private ViewGroup answerViewGroup;
 	
 	public Question(int id, String name, QuestionType type, boolean optional) {
 		this.id = id;
@@ -48,5 +51,13 @@ public class Question {
 	
 	public Dependency getRequires() {
 		return requires;
+	}
+	
+	public ViewGroup getAnswerViewGroup() {
+		return answerViewGroup;
+	}
+	
+	public void setAnswerViewGroup(ViewGroup viewGroup) {
+		this.answerViewGroup = viewGroup;
 	}
 }

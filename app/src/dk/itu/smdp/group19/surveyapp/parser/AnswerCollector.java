@@ -16,14 +16,14 @@ public class AnswerCollector {
 	 * @param answer
 	 */
 	public static void addAnswer(Answer answer) {
-		String answerString = String.format("(%d) %s", answer.getId(), answer.getName());
+		String answerString = String.format("(%s) %s", answer.getId(), answer.getName());
 		AnswerCollectorEntry entry = new AnswerCollectorEntry(answer.getId(), answerString);
 
 		addEntry(answer.getQuestionId(), entry);
 	}
 	
 	public static void addAnswer(Answer answer, String value) {
-		String answerString = String.format("(%d) %s", answer.getId(), value);
+		String answerString = String.format("(%s) %s", answer.getId(), value);
 		AnswerCollectorEntry entry = new AnswerCollectorEntry(answer.getId(), answerString);
 		
 		addEntry(answer.getQuestionId(), entry);
@@ -59,13 +59,14 @@ public class AnswerCollector {
 			// remove existing answer with same ID if it exists (to avoid duplicates)
 			// this is done by adding all answers with a different ID to a new list
 			for(AnswerCollectorEntry existingEntry : oldList) {
-				if(existingEntry.getAnswerId() != entry.getAnswerId()) {
+				if(!existingEntry.getAnswerId().equals(entry.getAnswerId())) {
 					newList.add(existingEntry);
 				}
 			}
 			
 			// add the new answer
 			newList.add(entry);
+			answers.put(questionId, newList);
 		}
 		else {
 			ArrayList<AnswerCollectorEntry> list = new ArrayList<AnswerCollectorEntry>();
@@ -105,7 +106,14 @@ public class AnswerCollector {
 		}
 		else if(d instanceof AnswerRef) {
 			AnswerRef ar = (AnswerRef) d;
-			//return answers.get(key)
+			
+			// look through the answers and see if it's there
+			for(ArrayList<AnswerCollectorEntry> aList : answers.values()) {
+				for(AnswerCollectorEntry ace : aList) {
+					if(ace.getAnswerId().equals(ar.getId()))
+						return true;
+				}
+			}
 		}
 		
 		return false;
