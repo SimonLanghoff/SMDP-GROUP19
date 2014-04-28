@@ -1,19 +1,19 @@
 package dk.itu.smdp.group19.surveyapp.parser.elements;
 
 public class Answer {
-	private int id;
+	private String id;
 	private int questionId;
 	private String name;
 	private AnswerType type;
 	
-	public Answer(int answerId, int questionId, String name, AnswerType type) {
+	public Answer(String answerId, int questionId, String name, AnswerType type) {
 		this.id = answerId;
 		this.questionId = questionId;
 		this.name = name;
 		this.type = type;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	

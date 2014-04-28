@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 
-import android.os.Environment;
-
 public class AnswerCollector {
 	private static HashMap<Integer, ArrayList<AnswerCollectorEntry>> answers = new HashMap<Integer, ArrayList<AnswerCollectorEntry>>();
 	

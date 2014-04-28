@@ -11,5 +11,6 @@ public class ElementNames {
 	public static final String FREETEXT_ANSWER = "FreetextAnswer";
 	
 	public static final String ATTRIBUTE_NAME = "name";
+	public static final String ATTRIBUTE_TEXT = "text";
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 }

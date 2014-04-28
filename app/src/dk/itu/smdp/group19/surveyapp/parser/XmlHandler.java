@@ -21,7 +21,7 @@ public class XmlHandler extends DefaultHandler {
 	private Question currentQuestion;
 	
 	private int questionId = 0;
-	private int answerId = 0; 
+//	private int answerId = 0; 
 	
 	public Survey getSurvey() {
 		return survey;
@@ -79,15 +79,17 @@ public class XmlHandler extends DefaultHandler {
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.CHOICE_ANSWER)) {
-			String answerName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			String answerId = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			String answerText = attributes.getValue(ElementNames.ATTRIBUTE_TEXT);
 			
-			Answer answer = new Answer(++answerId, currentQuestion.getId(), answerName, AnswerType.CHOICE);
+			Answer answer = new Answer(answerId, currentQuestion.getId(), answerText, AnswerType.CHOICE);
 			currentQuestion.addAnswer(answer);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_ANSWER)) {
-			String answerName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			String answerId = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			String answerText = attributes.getValue(ElementNames.ATTRIBUTE_TEXT);
 			
-			Answer answer = new Answer(++answerId, currentQuestion.getId(), answerName, AnswerType.FREETEXT);
+			Answer answer = new Answer(answerId, currentQuestion.getId(), answerText, AnswerType.FREETEXT);
 			currentQuestion.addAnswer(answer);
 		}
 	}

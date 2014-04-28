@@ -1,15 +1,15 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
 public class AnswerCollectorEntry {
-	private int answerId;
+	private String answerId;
 	private String formattedString;
 	
-	public AnswerCollectorEntry(int answerId, String formattedString) {
+	public AnswerCollectorEntry(String answerId, String formattedString) {
 		this.answerId = answerId;
 		this.formattedString = formattedString;
 	}
 	
-	public int getAnswerId() {
+	public String getAnswerId() {
 		return answerId;
 	}
 	

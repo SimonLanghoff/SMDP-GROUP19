@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="DefaultLocale">
+        <ignore path="src/dk/itu/smdp/group19/surveyapp/parser/AnswerCollector.java" />
+    </issue>
+</lint>
