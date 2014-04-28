@@ -3,4 +3,7 @@
     <issue id="DefaultLocale">
         <ignore path="src/dk/itu/smdp/group19/surveyapp/parser/AnswerCollector.java" />
     </issue>
+    <issue id="UseSparseArrays">
+        <ignore path="src/dk/itu/smdp/group19/surveyapp/parser/AnswerCollector.java" />
+    </issue>
 </lint>

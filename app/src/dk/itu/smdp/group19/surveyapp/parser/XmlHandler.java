@@ -64,6 +64,7 @@ public class XmlHandler extends DefaultHandler {
 			Question question = new Question(++questionId, questionName, QuestionType.SINGLE, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
+			AnswerCollector.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.MULTI_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
@@ -72,6 +73,7 @@ public class XmlHandler extends DefaultHandler {
 			Question question = new Question(++questionId, questionName, QuestionType.MULTI, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
+			AnswerCollector.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
@@ -80,6 +82,7 @@ public class XmlHandler extends DefaultHandler {
 			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
+			AnswerCollector.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.CHOICE_ANSWER)) {
 			String answerId = attributes.getValue(ElementNames.ATTRIBUTE_NAME);

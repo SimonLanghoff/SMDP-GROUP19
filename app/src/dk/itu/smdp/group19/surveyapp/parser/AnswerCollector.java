@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
+import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 
 public class AnswerCollector {
+	// parameters: <questionId, List<Answer>>
 	private static HashMap<Integer, ArrayList<AnswerCollectorEntry>> answers = new HashMap<Integer, ArrayList<AnswerCollectorEntry>>();
+	private static HashMap<Integer, String> questions = new HashMap<Integer, String>();
 	
 	/**
 	 * Adds an answer to its associated question (identified by answer.getQuestionId())
@@ -71,11 +74,27 @@ public class AnswerCollector {
 		}
 	}
 	
+	public static Boolean hasAnswer(int questionId) {
+		return answers.get(questionId).size() > 0;
+	}
+	
+	public static void addQuestion(int questionId, String questionName) {
+		questions.put(questionId, questionName);
+	}
+	
+	public static void addQuestion(Question question) {
+		addQuestion(question.getId(), question.getName());
+	}
+	
+	public static String getQuestionText(int questionId) {
+		return questions.get(questionId);
+	}
+	
 	public static String getAnswersAsString() {
 		String s = "";
 		
-		for(int questionId : answers.keySet()) {
-			s += "Question " + questionId + ": ";
+		for(int questionId : questions.keySet()) {
+			s += "Question " + questionId + ": \"" + getQuestionText(questionId) + "\"";
 			
 			Boolean first = true;
 			for(AnswerCollectorEntry entry : answers.get(questionId)) {
