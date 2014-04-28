@@ -44,14 +44,14 @@ public class XmlHandler extends DefaultHandler {
 		}
 		else if(qName.equals(ElementNames.DESCRIPTION_PAGE)) {
 			String pageName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
-			String pageDescription = attributes.getValue(ElementNames.ATTRIBUTE_DESCRIPTION);
+			String pageDescription = attributes.getValue(ElementNames.ATTRIBUTE_TEXT);
 			
 			Page page = new Page(pageName, pageDescription);
 			survey.addPage(page);
 		}
 		else if(qName.equals(ElementNames.QUESTION_PAGE)) {
 			String pageName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
-			String pageDescription = attributes.getValue(ElementNames.ATTRIBUTE_DESCRIPTION);
+			String pageDescription = attributes.getValue(ElementNames.ATTRIBUTE_TEXT);
 			
 			QuestionPage page = new QuestionPage(pageName, pageDescription);
 			currentPage = page;
@@ -59,22 +59,25 @@ public class XmlHandler extends DefaultHandler {
 		}
 		else if(qName.equals(ElementNames.SINGLE_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
 			
-			Question question = new Question(++questionId, questionName, QuestionType.SINGLE);
+			Question question = new Question(++questionId, questionName, QuestionType.SINGLE, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.MULTI_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
 			
-			Question question = new Question(++questionId, questionName, QuestionType.MULTI);
+			Question question = new Question(++questionId, questionName, QuestionType.MULTI, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
+			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
 			
-			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT);
+			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT, isOptional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 		}

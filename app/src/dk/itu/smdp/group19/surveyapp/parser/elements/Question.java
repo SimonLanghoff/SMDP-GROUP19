@@ -6,12 +6,14 @@ public class Question {
 	private int id;
 	private String name;
 	private QuestionType type;
+	private Boolean isOptional;
 	private ArrayList<Answer> answers;
 	
-	public Question(int id, String name, QuestionType type) {
+	public Question(int id, String name, QuestionType type, Boolean isOptional) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
+		this.isOptional = isOptional;
 		this.answers = new ArrayList<Answer>();
 	}
 	
@@ -25,6 +27,10 @@ public class Question {
 	
 	public QuestionType getType() {
 		return type;
+	}
+	
+	public Boolean isOptional() {
+		return isOptional;
 	}
 	
 	public ArrayList<Answer> getAnswers() {

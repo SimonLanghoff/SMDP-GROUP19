@@ -12,5 +12,6 @@ public class ElementNames {
 	
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String ATTRIBUTE_TEXT = "text";
-	public static final String ATTRIBUTE_DESCRIPTION = "description";
+//	public static final String ATTRIBUTE_DESCRIPTION = "description";
+	public static final String ATTRIBUTE_OPTIONAL = "optional";
 }
