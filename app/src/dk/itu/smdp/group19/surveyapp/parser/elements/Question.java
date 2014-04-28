@@ -6,7 +6,6 @@ public class Question {
 	private int id;
 	private String name;
 	private QuestionType type;
-	private Boolean isOptional;
 	private ArrayList<Answer> answers;
 	private Dependency requires;
 	private boolean optional;
@@ -15,7 +14,6 @@ public class Question {
 		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.isOptional = isOptional;
 		this.answers = new ArrayList<Answer>();
 		this.optional = optional;
 	}
@@ -30,10 +28,6 @@ public class Question {
 	
 	public QuestionType getType() {
 		return type;
-	}
-	
-	public Boolean isOptional() {
-		return isOptional;
 	}
 	
 	public ArrayList<Answer> getAnswers() {
