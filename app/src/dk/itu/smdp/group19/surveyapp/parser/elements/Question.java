@@ -8,13 +8,16 @@ public class Question {
 	private QuestionType type;
 	private Boolean isOptional;
 	private ArrayList<Answer> answers;
+	private Dependency requires;
+	private boolean optional;
 	
-	public Question(int id, String name, QuestionType type, Boolean isOptional) {
+	public Question(int id, String name, QuestionType type, boolean optional) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.isOptional = isOptional;
 		this.answers = new ArrayList<Answer>();
+		this.optional = optional;
 	}
 	
 	public int getId() {
@@ -39,5 +42,17 @@ public class Question {
 	
 	public void addAnswer(Answer answer) {
 		answers.add(answer);
+	}
+	
+	public boolean isOptional() {
+		return optional;
+	}
+	
+	public void setRequires(Dependency dependency) {
+		this.requires = dependency;
+	}
+	
+	public Dependency getRequires() {
+		return requires;
 	}
 }

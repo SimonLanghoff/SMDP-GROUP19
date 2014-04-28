@@ -3,8 +3,8 @@ package dk.itu.smdp.group19.surveyapp.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
+import dk.itu.smdp.group19.surveyapp.parser.elements.*;
+import android.os.Environment;
 
 public class AnswerCollector {
 	// parameters: <questionId, List<Answer>>
@@ -88,6 +88,27 @@ public class AnswerCollector {
 	
 	public static String getQuestionText(int questionId) {
 		return questions.get(questionId);
+	}
+
+	public static boolean isDependencySatisfied(Dependency d) {
+		if(d instanceof And) {
+			And a = (And) d;
+			return isDependencySatisfied(a.getLhs()) && isDependencySatisfied(a.getRhs());
+		}
+		else if(d instanceof Or) {
+			Or o = (Or) d;
+			return isDependencySatisfied(o.getLhs()) || isDependencySatisfied(o.getRhs());
+		}
+		else if(d instanceof Not) {
+			Not n = (Not) d;
+			return !isDependencySatisfied(n.getDependency());
+		}
+		else if(d instanceof AnswerRef) {
+			AnswerRef ar = (AnswerRef) d;
+			//return answers.get(key)
+		}
+		
+		return false;
 	}
 	
 	public static String getAnswersAsString() {

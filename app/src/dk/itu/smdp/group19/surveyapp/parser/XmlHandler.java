@@ -1,17 +1,12 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
+import java.util.ArrayList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
-import dk.itu.smdp.group19.surveyapp.parser.elements.AnswerType;
-import dk.itu.smdp.group19.surveyapp.parser.elements.ElementNames;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Page;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
-import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionPage;
-import dk.itu.smdp.group19.surveyapp.parser.elements.QuestionType;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
+import dk.itu.smdp.group19.surveyapp.parser.elements.*;
 
 public class XmlHandler extends DefaultHandler {
 	private final String TAG = "XmlHandler";
@@ -19,6 +14,7 @@ public class XmlHandler extends DefaultHandler {
 	private Survey survey;
 	private QuestionPage currentPage;
 	private Question currentQuestion;
+	private Dependency currentDependency;
 	
 	private int questionId = 0;
 //	private int answerId = 0; 
@@ -59,27 +55,27 @@ public class XmlHandler extends DefaultHandler {
 		}
 		else if(qName.equals(ElementNames.SINGLE_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
-			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
-			
-			Question question = new Question(++questionId, questionName, QuestionType.SINGLE, isOptional);
+			boolean optional = attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL).equalsIgnoreCase("true");
+
+			Question question = new Question(++questionId, questionName, QuestionType.SINGLE, optional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 			AnswerCollector.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.MULTI_CHOICE_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
-			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
+			boolean optional = attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL).equalsIgnoreCase("true");
 			
-			Question question = new Question(++questionId, questionName, QuestionType.MULTI, isOptional);
+			Question question = new Question(++questionId, questionName, QuestionType.MULTI, optional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 			AnswerCollector.addQuestion(question);
 		}
 		else if(qName.equals(ElementNames.FREETEXT_QUESTION)) {
 			String questionName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
-			Boolean isOptional = Boolean.parseBoolean(attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL));
+			boolean optional = attributes.getValue(ElementNames.ATTRIBUTE_OPTIONAL).equalsIgnoreCase("true");
 			
-			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT, isOptional);
+			Question question = new Question(++questionId, questionName, QuestionType.FREETEXT, optional);
 			currentQuestion = question;
 			currentPage.addQuestion(question);
 			AnswerCollector.addQuestion(question);
@@ -98,6 +94,21 @@ public class XmlHandler extends DefaultHandler {
 			Answer answer = new Answer(answerId, currentQuestion.getId(), answerText, AnswerType.FREETEXT);
 			currentQuestion.addAnswer(answer);
 		}
+		else if(qName.equals(ElementNames.REQUIRES)) {
+			currentDependency = null;
+		}
+		else if(qName.equals(ElementNames.AND)) {
+			linkDependencies(new And());
+		}
+		else if(qName.equals(ElementNames.OR)) {
+			linkDependencies(new Or());
+		}
+		else if(qName.equals(ElementNames.NOT)) {
+			linkDependencies(new Not());
+		}
+		else if(qName.equals(ElementNames.ANSWER_REF)) {
+			linkDependencies(new AnswerRef(attributes.getValue(ElementNames.ATTRIBUTE_NAME)));
+		}
 	}
 
 	@Override
@@ -113,6 +124,18 @@ public class XmlHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		super.endElement(uri, localName, qName);
 //		Log.d(TAG, "endElement");
+		
+		if(qName.equals(ElementNames.REQUIRES)) {
+			// dependency parsing for this question is done, add it to the question
+			currentQuestion.setRequires(currentDependency);
+		}
+		else if(qName.equals(ElementNames.AND) || qName.equals(ElementNames.OR) 
+				|| qName.equals(ElementNames.NOT) || qName.equals(ElementNames.ANSWER_REF)) {
+			// a dependency has ended, go upwards in the dependency tree 
+			Dependency parent = currentDependency.getParent();
+			if(parent != null)
+				currentDependency = parent;
+		}
 	}
 
 	@Override
@@ -120,5 +143,30 @@ public class XmlHandler extends DefaultHandler {
 		super.endDocument();
 //		Log.d(TAG, "endDocument");
 	}
-
+	
+	/**
+	 * Set a new dependency as a child of the current dependency, and vice-versa.
+	 * @param newDependency
+	 */
+	private void linkDependencies(Dependency newDependency) {
+		// set the enclosing dependency to the parent of this dependency
+		newDependency.setParent(currentDependency);
+		
+		// add this dependency to the children of the enclosing dependency
+		if(currentDependency != null) {
+			if(currentDependency instanceof Expression) {
+				Expression e = (Expression) currentDependency;
+				
+				if(e.getLhs() == null)
+					e.setLhs(newDependency);
+				else if(e.getRhs() == null)
+					e.setRhs(newDependency);
+			}
+			else if(currentDependency instanceof Not)
+				((Not) currentDependency).setDependency(newDependency);
+		}
+		
+		// set the current dependency to this dependency
+		currentDependency = newDependency;
+	}
 }
