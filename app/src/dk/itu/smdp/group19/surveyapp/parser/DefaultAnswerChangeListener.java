@@ -1,7 +1,9 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
 
 public class DefaultAnswerChangeListener implements AnswerChangeListener {
@@ -11,6 +13,19 @@ public class DefaultAnswerChangeListener implements AnswerChangeListener {
 		if(answerView.getClass() == EditText.class) {
 			EditText et = (EditText) answerView;
 			AnswerCollector.addAnswer(answer, et.getText().toString());
+		}
+		else if(answerView.getClass() == CheckBox.class) {
+			CheckBox cb = (CheckBox) answerView;
+			if(cb.isChecked()) {
+				AnswerCollector.addAnswer(answer);
+			}
+			else {
+				AnswerCollector.removeAnswer(answer);
+			}
+		}
+		else if(answerView.getClass() == RadioButton.class) {
+			AnswerCollector.removeAllAnswersFromQuestion(answer.getQuestionId());
+			AnswerCollector.addAnswer(answer);
 		}
 		else {
 			AnswerCollector.addAnswer(answer);

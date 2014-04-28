@@ -24,6 +24,23 @@ public class AnswerCollector {
 		addEntry(answer.getQuestionId(), entry);
 	}
 	
+	public static void removeAnswer(Answer answer) {
+		ArrayList<AnswerCollectorEntry> list = answers.get(answer.getQuestionId());
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getAnswerId() == answer.getId()) {
+				list.remove(i);
+			}
+		}
+	}
+	
+	public static void removeAllAnswersFromQuestion(int questionId) {
+		ArrayList<AnswerCollectorEntry> list = answers.get(questionId);
+		if(list != null) {
+			list.clear();
+		}
+	}
+	
 	private static void addEntry(int questionId, AnswerCollectorEntry entry) {
 		if(answers.containsKey(questionId)) {
 			ArrayList<AnswerCollectorEntry> list = answers.get(questionId);
