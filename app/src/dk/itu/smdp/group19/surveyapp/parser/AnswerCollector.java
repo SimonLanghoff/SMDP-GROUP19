@@ -16,14 +16,14 @@ public class AnswerCollector {
 	 * @param answer
 	 */
 	public static void addAnswer(Answer answer) {
-		String answerString = String.format("(%d) %s", answer.getId(), answer.getName());
+		String answerString = String.format("(%s) %s", answer.getId(), answer.getName());
 		AnswerCollectorEntry entry = new AnswerCollectorEntry(answer.getId(), answerString);
 
 		addEntry(answer.getQuestionId(), entry);
 	}
 	
 	public static void addAnswer(Answer answer, String value) {
-		String answerString = String.format("(%d) %s", answer.getId(), value);
+		String answerString = String.format("(%s) %s", answer.getId(), value);
 		AnswerCollectorEntry entry = new AnswerCollectorEntry(answer.getId(), answerString);
 		
 		addEntry(answer.getQuestionId(), entry);
@@ -93,7 +93,7 @@ public class AnswerCollector {
 	public static String getAnswersAsString() {
 		String s = "";
 		
-		for(int questionId : questions.keySet()) {
+		for(int questionId : answers.keySet()) {
 			s += "Question " + questionId + ": \"" + getQuestionText(questionId) + "\"";
 			
 			Boolean first = true;
