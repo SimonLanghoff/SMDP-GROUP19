@@ -1,6 +1,8 @@
 package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import dk.itu.smdp.group19.surveyapp.parser.Action;
+import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 import dk.itu.smdp.group19.surveyapp.parser.DefaultAnswerChangeListener;
 import dk.itu.smdp.group19.surveyapp.parser.UserControlGenerator;
 import dk.itu.smdp.group19.surveyapp.parser.XmlParser;
@@ -26,9 +30,10 @@ import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
 public class SurveyActivity extends Activity {
 	public final String TAG = "SurveyActivity";
 	private final String APPDIR = getAppDir();
-	private final String SURVEY_FILE_NAME = "brandts_survey.xml";
+	private final String SURVEY_FILE_NAME = "title.xml";
 	
 	private UserControlGenerator controlGenerator;
+	private List<Question> allQuestions;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +48,24 @@ public class SurveyActivity extends Activity {
 		XmlParser parser = new XmlParser(filePath);
 		Survey survey = parser.parse();
 		
-		if(survey != null) {
+		if(survey != null)
 			generateSurvey(survey);
-		}
+		
+		allQuestions = collectQuestions(survey);
+		applyDependencies(allQuestions);
 		
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
 	private void generateSurvey(Survey survey) {
+		// make it possible to enable/disable questions based on dependencies
+		Action answerChangedCallback = new Action() {
+			@Override
+			public void doAction() {
+				applyDependencies(allQuestions);
+			}
+		};
+		
 		LinearLayout layout = (LinearLayout) findViewById(R.id.root);
 		
 		TextView surveyTitle = new TextView(this);
@@ -69,16 +84,17 @@ public class SurveyActivity extends Activity {
 					ViewGroup answers = null;
 					
 					if(question.getType() == QuestionType.SINGLE) {
-						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
+						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					}
 					else if(question.getType() == QuestionType.MULTI) {
-						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
+						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					}
 					else if(question.getType() == QuestionType.FREETEXT) {
-						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new DefaultAnswerChangeListener());
+						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					}
 					
 					layout.addView(answers);
+					question.setAnswerViewGroup(answers);
 				}
 			}
 		}
@@ -95,6 +111,32 @@ public class SurveyActivity extends Activity {
 			}
 		});
 		layout.addView(buttonSend);
+	}
+	
+	private void applyDependencies(List<Question> allQuestions) {
+		for(Question q : allQuestions) {
+			if(q.getRequires() == null || q.getAnswerViewGroup() == null)
+				continue;
+			
+			// enable or disable the question
+			ViewGroup vg = q.getAnswerViewGroup();
+			boolean enable = AnswerCollector.isDependencySatisfied(q.getRequires());
+			
+			for(int i = 0; i < vg.getChildCount(); i++)
+				vg.getChildAt(i).setEnabled(enable);
+			vg.setEnabled(enable);
+		}
+	}
+	
+	private List<Question> collectQuestions(Survey s) {
+		ArrayList<Question> questions = new ArrayList<Question>();
+		
+		for(Page p : s.getPages()) {
+			if(p instanceof QuestionPage)
+				questions.addAll(((QuestionPage) p).getQuestions());
+		}
+		
+		return questions;
 	}
 	
 	private void removeFocusFromAllElements() {

@@ -9,9 +9,13 @@ public class ElementNames {
 	public static final String FREETEXT_QUESTION = "FreetextQuestion";
 	public static final String CHOICE_ANSWER = "ChoiceAnswer";
 	public static final String FREETEXT_ANSWER = "FreetextAnswer";
+	public static final String REQUIRES = "Requires";
+	public static final String AND = "And";
+	public static final String OR = "Or";
+	public static final String NOT = "Not";
+	public static final String ANSWER_REF = "AnswerRef";
 	
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String ATTRIBUTE_TEXT = "text";
-//	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_OPTIONAL = "optional";
 }
