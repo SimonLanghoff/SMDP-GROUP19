@@ -1,14 +1,10 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import dk.itu.smdp.group19.surveyapp.parser.elements.Answer;
-import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 
 public class DefaultAnswerChangeListener implements AnswerChangeListener {
 	private Action callback;

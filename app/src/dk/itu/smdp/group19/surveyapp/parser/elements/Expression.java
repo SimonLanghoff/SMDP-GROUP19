@@ -1,6 +1,5 @@
 package dk.itu.smdp.group19.surveyapp.parser.elements;
 
-import java.util.ArrayList;
 
 public abstract class Expression extends Dependency {
 	private Dependency lhs;
