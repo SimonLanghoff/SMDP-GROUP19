@@ -128,7 +128,7 @@ public class AnswerCollector {
 		String s = "";
 		
 		for(int questionId : answers.keySet()) {
-			s += "Question " + questionId + ": \"" + getQuestionText(questionId) + "\"";
+			s += "Question " + questionId + ": \"" + getQuestionText(questionId) + "\" ";
 			
 			Boolean first = true;
 			for(AnswerCollectorEntry entry : answers.get(questionId)) {

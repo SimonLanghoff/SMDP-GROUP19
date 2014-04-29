@@ -1,14 +1,11 @@
 package dk.itu.smdp.group19.surveyapp;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -29,8 +26,8 @@ import dk.itu.smdp.group19.surveyapp.parser.elements.Survey;
 
 public class SurveyActivity extends Activity {
 	public final String TAG = "SurveyActivity";
-	private final String APPDIR = getAppDir();
-	private final String SURVEY_FILE_NAME = "title.xml";
+	private final String APPDIR = MainActivity.getAppDir();
+	private String SURVEY_FILE_NAME;
 	
 	private UserControlGenerator controlGenerator;
 	private List<Question> allQuestions;
@@ -39,6 +36,8 @@ public class SurveyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_survey);
+		
+		SURVEY_FILE_NAME = getIntent().getStringExtra("filename");
 		
 		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
 //		File file = new File(filePath);
@@ -146,28 +145,5 @@ public class SurveyActivity extends Activity {
 			View v = ll.getChildAt(i);
 			v.clearFocus();
 		}
-	}
-	
-	public String getAppDir() {
-		if(isExternalStorageReadable()) {
-			File storageDir = Environment.getExternalStorageDirectory();
-			File appDir = new File(storageDir, "/SurveyApp");
-			Boolean didCreate = appDir.mkdirs();
-			Log.i(TAG, "Created app dir: " + didCreate);
-			return appDir.getAbsolutePath();
-		} else {
-			Log.e(TAG, "External storage not available!");
-			return null;
-		}
-	}
-	
-	/* Checks if external storage is available to at least read */
-	public boolean isExternalStorageReadable() {
-	    String state = Environment.getExternalStorageState();
-	    if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-	        return true;
-	    }
-	    
-	    return false;
 	}
 }
