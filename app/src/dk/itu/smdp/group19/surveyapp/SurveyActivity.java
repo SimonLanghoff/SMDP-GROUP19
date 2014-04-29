@@ -40,7 +40,6 @@ public class SurveyActivity extends Activity {
 		SURVEY_FILE_NAME = getIntent().getStringExtra("filename");
 		
 		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
-//		File file = new File(filePath);
 		
 		controlGenerator = new UserControlGenerator(this);
 		
@@ -53,7 +52,8 @@ public class SurveyActivity extends Activity {
 		allQuestions = collectQuestions(survey);
 		applyDependencies(allQuestions);
 		
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		removeFocusFromAllElements();
 	}
 	
 	private void generateSurvey(Survey survey) {
