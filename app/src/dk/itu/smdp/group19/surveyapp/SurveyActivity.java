@@ -52,7 +52,7 @@ public class SurveyActivity extends Activity {
 		allQuestions = collectQuestions(survey);
 		applyDependencies(allQuestions);
 		
-//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		removeFocusFromAllElements();
 	}
 	
