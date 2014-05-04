@@ -49,7 +49,7 @@ public class XmlHandler extends DefaultHandler {
 			
 			survey.setTitle(surveyTitle);
 		}
-		else if(qName.equals(ElementNames.DESCRIPTION_PAGE)) {
+		else if(qName.equals(ElementNames.DESCRIPTION_PAGE) || qName.equals(ElementNames.RESULT_PAGE)) {
 			String pageName = attributes.getValue(ElementNames.ATTRIBUTE_NAME);
 			String pageDescription = attributes.getValue(ElementNames.ATTRIBUTE_TEXT);
 			

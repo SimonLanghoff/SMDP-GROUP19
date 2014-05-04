@@ -4,6 +4,7 @@ public class ElementNames {
 	public static final String SURVEY = "Survey";
 	public static final String DESCRIPTION_PAGE = "DescriptionPage";
 	public static final String QUESTION_PAGE = "QuestionPage";
+	public static final String RESULT_PAGE = "ResultPage";
 	public static final String SINGLE_CHOICE_QUESTION = "SingleChoiceQuestion";
 	public static final String MULTI_CHOICE_QUESTION = "MultiChoiceQuestion";
 	public static final String FREETEXT_QUESTION = "FreetextQuestion";
