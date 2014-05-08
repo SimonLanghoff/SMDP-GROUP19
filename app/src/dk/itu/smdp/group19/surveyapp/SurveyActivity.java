@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import dk.itu.smdp.group19.surveyapp.parser.Action;
 import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 import dk.itu.smdp.group19.surveyapp.parser.DefaultAnswerChangeListener;
@@ -31,6 +32,7 @@ public class SurveyActivity extends Activity {
 
 	private UserControlGenerator controlGenerator;
 	private List<Question> allQuestions;
+	private List<PageFragment> pageFragments;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +68,18 @@ public class SurveyActivity extends Activity {
 			}
 		};
 
-		LinearLayout layout = (LinearLayout) findViewById(R.id.root);
+//		LinearLayout layout = (LinearLayout) findViewById(R.id.root);
+//
+//		TextView surveyTitle = new TextView(this);
+//		surveyTitle.setText(survey.getTitle());
+//		layout.addView(surveyTitle);
 
-		TextView surveyTitle = new TextView(this);
-		surveyTitle.setText(survey.getTitle());
-		layout.addView(surveyTitle);
-
+		pageFragments = new ArrayList<PageFragment>();
+		
 		for (Page page : survey.getPages()) {
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.VERTICAL);
+			
 			layout.addView(controlGenerator.makePageHeader(page));
 
 			if (page.getClass() == QuestionPage.class) {
@@ -104,8 +111,70 @@ public class SurveyActivity extends Activity {
 					question.setAnswerViewGroup(answers);
 				}
 			}
+			
+			PageFragment pageFragment = new PageFragment();
+			pageFragment.setLayout(layout);
+			
+			pageFragments.add(pageFragment);
 		}
-
+		
+		FragmentManager manager = getFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.add(R.id.root, pageFragments.get(0), "0");
+		transaction.addToBackStack(null);
+		transaction.commit();
+		
+		addNavigationButtons();
+		addSendButton();
+	}
+	
+	private void addNavigationButtons() {
+		for(int i = 0; i < pageFragments.size(); i++) {
+			final int currentIndex = i;
+			LinearLayout layout = pageFragments.get(i).getLayout(); 
+			
+			if(i > 0) {
+				Button previous = new Button(this);
+				previous.setText("Previous");
+				
+				previous.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						PageFragment previousFragment = pageFragments.get(currentIndex-1);
+						
+						FragmentManager manager = getFragmentManager();
+						FragmentTransaction transaction = manager.beginTransaction();
+						transaction.replace(R.id.root, previousFragment, "" + (currentIndex-1));
+						transaction.addToBackStack(null);
+						transaction.commit();
+					}
+				});
+				
+				layout.addView(previous);
+			}
+			if(i < pageFragments.size() - 1) {
+				Button next = new Button(this);
+				next.setText("Next");
+				
+				next.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						PageFragment nextFragment = pageFragments.get(currentIndex+1);
+						
+						FragmentManager manager = getFragmentManager();
+						FragmentTransaction transaction = manager.beginTransaction();
+						transaction.replace(R.id.root, nextFragment, "" + (currentIndex+1));
+						transaction.addToBackStack(null);
+						transaction.commit();
+					}
+				});
+				
+				layout.addView(next);
+			}
+		}
+	}
+	
+	private void addSendButton() {
 		Button buttonSend = new Button(this);
 		buttonSend.setText("Send");
 		buttonSend.setOnClickListener(new OnClickListener() {
@@ -117,7 +186,9 @@ public class SurveyActivity extends Activity {
 				startActivity(i);
 			}
 		});
-		layout.addView(buttonSend);
+		
+		pageFragments.get(pageFragments.size() - 1).getLayout().addView(buttonSend);
+//		layout.addView(buttonSend);
 	}
 
 	private void applyDependencies(List<Question> allQuestions) {
@@ -147,12 +218,13 @@ public class SurveyActivity extends Activity {
 	}
 
 	private void removeFocusFromAllElements() {
-		LinearLayout ll = (LinearLayout) findViewById(R.id.root);
-
-		for (int i = 0; i < ll.getChildCount(); i++) {
-			View v = ll.getChildAt(i);
-			v.clearFocus();
-		}
+		// TODO: former 'root' is now added dynamically... what to do?
+//		LinearLayout ll = (LinearLayout) findViewById(R.id.root);
+//
+//		for (int i = 0; i < ll.getChildCount(); i++) {
+//			View v = ll.getChildAt(i);
+//			v.clearFocus();
+//		}
 	}
 
 	private void setGroupEnabled(ViewGroup view, boolean enabled) {
