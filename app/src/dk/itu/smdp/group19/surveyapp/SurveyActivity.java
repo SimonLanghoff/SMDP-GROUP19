@@ -3,11 +3,15 @@ package dk.itu.smdp.group19.surveyapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -58,6 +62,31 @@ public class SurveyActivity extends Activity {
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		removeFocusFromAllElements();
 	}
+	
+	@Override
+	public void onBackPressed() {
+	   DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        switch (which) {
+		        case DialogInterface.BUTTON_POSITIVE:
+		            finish();
+		            break;
+
+		        case DialogInterface.BUTTON_NEGATIVE:
+		        	// do nothing, I guess.
+		            break;
+		        }
+		    }
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Exit survey?")
+			.setMessage("This will exit the survey, and all data will be lost. Are you sure?")
+			.setPositiveButton("Yes", dialogClickListener)
+			.setNegativeButton("No", dialogClickListener)
+			.show();
+	}
 
 	private void generateSurvey(Survey survey) {
 		// make it possible to enable/disable questions based on dependencies
@@ -74,6 +103,9 @@ public class SurveyActivity extends Activity {
 //		surveyTitle.setText(survey.getTitle());
 //		layout.addView(surveyTitle);
 
+		ActionBar actionBar = getActionBar();
+		actionBar.setTitle(survey.getTitle());
+		
 		pageFragments = new ArrayList<PageFragment>();
 		
 		for (Page page : survey.getPages()) {
@@ -121,7 +153,7 @@ public class SurveyActivity extends Activity {
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.root, pageFragments.get(0), "0");
-		transaction.addToBackStack(null);
+//		transaction.addToBackStack(null);
 		transaction.commit();
 		
 		addNavigationButtons();
@@ -131,7 +163,9 @@ public class SurveyActivity extends Activity {
 	private void addNavigationButtons() {
 		for(int i = 0; i < pageFragments.size(); i++) {
 			final int currentIndex = i;
-			LinearLayout layout = pageFragments.get(i).getLayout(); 
+			LinearLayout layout = pageFragments.get(i).getLayout();
+			LinearLayout buttonContainer = new LinearLayout(this);
+			buttonContainer.setOrientation(LinearLayout.HORIZONTAL);
 			
 			if(i > 0) {
 				Button previous = new Button(this);
@@ -143,14 +177,15 @@ public class SurveyActivity extends Activity {
 						PageFragment previousFragment = pageFragments.get(currentIndex-1);
 						
 						FragmentManager manager = getFragmentManager();
+						
 						FragmentTransaction transaction = manager.beginTransaction();
 						transaction.replace(R.id.root, previousFragment, "" + (currentIndex-1));
-						transaction.addToBackStack(null);
 						transaction.commit();
 					}
 				});
 				
-				layout.addView(previous);
+//				layout.addView(previous);
+				buttonContainer.addView(previous);
 			}
 			if(i < pageFragments.size() - 1) {
 				Button next = new Button(this);
@@ -162,15 +197,18 @@ public class SurveyActivity extends Activity {
 						PageFragment nextFragment = pageFragments.get(currentIndex+1);
 						
 						FragmentManager manager = getFragmentManager();
+						
 						FragmentTransaction transaction = manager.beginTransaction();
 						transaction.replace(R.id.root, nextFragment, "" + (currentIndex+1));
-						transaction.addToBackStack(null);
 						transaction.commit();
 					}
 				});
 				
-				layout.addView(next);
+//				layout.addView(next);
+				buttonContainer.addView(next);
 			}
+			
+			layout.addView(buttonContainer);
 		}
 	}
 	
@@ -184,6 +222,7 @@ public class SurveyActivity extends Activity {
 
 				Intent i = new Intent(v.getContext(), SendEmailActivity.class);
 				startActivity(i);
+				finish();
 			}
 		});
 		
@@ -219,8 +258,9 @@ public class SurveyActivity extends Activity {
 
 	private void removeFocusFromAllElements() {
 		// TODO: former 'root' is now added dynamically... what to do?
-//		LinearLayout ll = (LinearLayout) findViewById(R.id.root);
-//
+		LinearLayout ll = (LinearLayout) findViewById(R.id.root);
+		ll.clearFocus();
+//		Log.d("TAG", "child count: " + ll.getChildCount());
 //		for (int i = 0; i < ll.getChildCount(); i++) {
 //			View v = ll.getChildAt(i);
 //			v.clearFocus();

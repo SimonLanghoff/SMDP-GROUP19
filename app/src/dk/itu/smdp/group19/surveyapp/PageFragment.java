@@ -1,6 +1,5 @@
 package dk.itu.smdp.group19.surveyapp;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +13,18 @@ public class PageFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_page, container, false);
+//        return inflater.inflate(R.layout.fragment_page, container, false);
+		return layout;
     }
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.pageFragmentRoot);
-		if(ll != null) {
-			ll.addView(layout);
-		}
+//		LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.pageFragmentRoot);
+//		if(ll != null) {
+//			ll.addView(layout);
+//		}
 	}
 	
 	public PageFragment() {

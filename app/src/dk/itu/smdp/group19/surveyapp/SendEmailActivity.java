@@ -24,9 +24,18 @@ public class SendEmailActivity extends Activity {
 		i.putExtra(Intent.EXTRA_TEXT, AnswerCollector.getAnswersAsString());
 		
 		try {
-		    startActivity(Intent.createChooser(i, "Send mail..."));
+//		    startActivity(Intent.createChooser(i, "Send mail..."));
+		    startActivityForResult(Intent.createChooser(i, "Send e-mail"), 1);
 		} catch (android.content.ActivityNotFoundException ex) {
 		    Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		Log.d("TAG", "requestCode: " + requestCode);
+		Log.d("TAG", "resultCode: " + resultCode);
 	}
 }

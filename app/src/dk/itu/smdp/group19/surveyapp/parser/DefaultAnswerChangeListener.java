@@ -1,5 +1,6 @@
 package dk.itu.smdp.group19.surveyapp.parser;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;

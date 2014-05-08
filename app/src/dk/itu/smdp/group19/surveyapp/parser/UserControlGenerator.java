@@ -3,6 +3,7 @@ package dk.itu.smdp.group19.surveyapp.parser;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
@@ -202,6 +203,7 @@ public class UserControlGenerator {
 
 		TextView pageTitle = new TextView(context);
 		pageTitle.setText(page.getName());
+		pageTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 		layout.addView(pageTitle);
 
 		TextView pageDescription = new TextView(context);

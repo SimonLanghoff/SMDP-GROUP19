@@ -2,7 +2,6 @@ package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Intent;
