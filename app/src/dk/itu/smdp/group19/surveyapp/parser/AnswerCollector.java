@@ -14,7 +14,6 @@ import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 public class AnswerCollector {
 	// parameters: <questionId, List<Answer>>
 	private static HashMap<Integer, ArrayList<AnswerCollectorEntry>> answers = new HashMap<Integer, ArrayList<AnswerCollectorEntry>>();
-//	private static HashMap<Integer, String> questions = new HashMap<Integer, String>();
 	private static HashMap<Integer, Question> questions = new HashMap<Integer, Question>();
 	private static String recipient;
 	
@@ -86,12 +85,7 @@ public class AnswerCollector {
 		return answers.get(questionId).size() > 0;
 	}
 	
-//	private static void addQuestion(int questionId, String questionName) {
-//		questions.put(questionId, questionName);
-//	}
-	
 	public static void addQuestion(Question question) {
-//		addQuestion(question.getId(), question.getName());
 		questions.put(question.getId(), question);
 	}
 	
@@ -145,6 +139,12 @@ public class AnswerCollector {
 	
 	public static String getRecipient() {
 		return AnswerCollector.recipient;
+	}
+	
+	public static void purge() {
+		AnswerCollector.recipient = "";
+		AnswerCollector.answers = new HashMap<Integer, ArrayList<AnswerCollectorEntry>>();
+		AnswerCollector.questions = new HashMap<Integer, Question>();
 	}
 	
 	public static String getAnswersAsString() {

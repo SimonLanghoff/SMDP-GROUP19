@@ -37,5 +37,7 @@ public class SendEmailActivity extends Activity {
 		
 		TextView thanks = (TextView) findViewById(R.id.thankYou);
 		thanks.setText(thanks.getText() + " " + AnswerCollector.getRecipient());
+		
+		AnswerCollector.purge();
 	}
 }
