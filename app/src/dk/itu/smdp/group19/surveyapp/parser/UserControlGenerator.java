@@ -215,8 +215,9 @@ public class UserControlGenerator {
 
 	public View makeQuestionHeader(Question question) {
 		TextView questionName = new TextView(context);
-		questionName.setText(question.getName());
-
+		String questionNameText = question.getName() + (question.isOptional() ? " (optional)" : "");
+		questionName.setText(questionNameText);
+		
 		return questionName;
 	}
 

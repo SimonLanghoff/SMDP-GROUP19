@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 
@@ -19,12 +20,11 @@ public class SendEmailActivity extends Activity {
 		
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
-		i.putExtra(Intent.EXTRA_EMAIL, new String[] {"mfli@itu.dk"});
+		i.putExtra(Intent.EXTRA_EMAIL, new String[] {AnswerCollector.getRecipient()});
 		i.putExtra(Intent.EXTRA_SUBJECT, "New answer to your survey!");
 		i.putExtra(Intent.EXTRA_TEXT, AnswerCollector.getAnswersAsString());
 		
 		try {
-//		    startActivity(Intent.createChooser(i, "Send mail..."));
 		    startActivityForResult(Intent.createChooser(i, "Send e-mail"), 1);
 		} catch (android.content.ActivityNotFoundException ex) {
 		    Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
@@ -35,7 +35,7 @@ public class SendEmailActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		Log.d("TAG", "requestCode: " + requestCode);
-		Log.d("TAG", "resultCode: " + resultCode);
+		TextView thanks = (TextView) findViewById(R.id.thankYou);
+		thanks.setText(thanks.getText() + " " + AnswerCollector.getRecipient());
 	}
 }

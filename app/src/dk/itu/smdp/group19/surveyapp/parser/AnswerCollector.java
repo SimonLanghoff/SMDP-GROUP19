@@ -14,7 +14,9 @@ import dk.itu.smdp.group19.surveyapp.parser.elements.Question;
 public class AnswerCollector {
 	// parameters: <questionId, List<Answer>>
 	private static HashMap<Integer, ArrayList<AnswerCollectorEntry>> answers = new HashMap<Integer, ArrayList<AnswerCollectorEntry>>();
-	private static HashMap<Integer, String> questions = new HashMap<Integer, String>();
+//	private static HashMap<Integer, String> questions = new HashMap<Integer, String>();
+	private static HashMap<Integer, Question> questions = new HashMap<Integer, Question>();
+	private static String recipient;
 	
 	/**
 	 * Adds an answer to its associated question (identified by answer.getQuestionId())
@@ -84,16 +86,17 @@ public class AnswerCollector {
 		return answers.get(questionId).size() > 0;
 	}
 	
-	public static void addQuestion(int questionId, String questionName) {
-		questions.put(questionId, questionName);
-	}
+//	private static void addQuestion(int questionId, String questionName) {
+//		questions.put(questionId, questionName);
+//	}
 	
 	public static void addQuestion(Question question) {
-		addQuestion(question.getId(), question.getName());
+//		addQuestion(question.getId(), question.getName());
+		questions.put(question.getId(), question);
 	}
 	
 	public static String getQuestionText(int questionId) {
-		return questions.get(questionId);
+		return questions.get(questionId).getName();
 	}
 
 	public static boolean isDependencySatisfied(Dependency d) {
@@ -124,25 +127,46 @@ public class AnswerCollector {
 		return false;
 	}
 	
+	public static Boolean checkMandatoriesHaveAnswers() {
+		for(Question question : questions.values()) {
+			if(!question.isOptional()) {
+				if(answers == null || !answers.containsKey(question.getId()) || answers.get(question.getId()) == null) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	public static void setRecipient(String recipient) {
+		AnswerCollector.recipient = recipient;
+	}
+	
+	public static String getRecipient() {
+		return AnswerCollector.recipient;
+	}
+	
 	public static String getAnswersAsString() {
 		String s = "";
 		
 		for(int questionId : answers.keySet()) {
-			s+= String.format("Question: '%s'\nAnswers: ", getQuestionText(questionId));
-//			s += "Question " + questionId + ": \"" + getQuestionText(questionId) + "\" ";
-			
-			Boolean first = true;
-			for(AnswerCollectorEntry entry : answers.get(questionId)) {
-				if(!first) {
-					s += ", ";
+			if(answers.get(questionId) != null && answers.get(questionId).size() > 0) {
+				s+= String.format("Question: '%s'\nAnswers: ", getQuestionText(questionId));
+				
+				Boolean first = true;
+				for(AnswerCollectorEntry entry : answers.get(questionId)) {
+					if(!first) {
+						s += ", ";
+					}
+					
+					s += entry;
+					
+					first = false;
 				}
 				
-				s += entry;
-				
-				first = false;
+				s += "\n";
 			}
-			
-			s += "\n";
 		}
 		
 		return s;

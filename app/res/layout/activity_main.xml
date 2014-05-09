@@ -19,7 +19,24 @@
         android:id="@+id/spinnerFileSelector"
         android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/textViewWelcomeMessage" />
+		android:layout_below="@id/textViewWelcomeMessage"
+		android:layout_marginBottom="35dp" />
+    
+    <TextView
+        android:id="@+id/textViewSendMailTo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerFileSelector"
+        android:layout_marginBottom="10dp"
+        android:text="@string/sendMailTo" />
+    
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewSendMailTo"
+        android:inputType="textEmailAddress"
+        android:hint="@string/sendMailToHint" />
     
     <Button 
         android:id="@+id/buttonStartSurvey"

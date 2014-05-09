@@ -24,12 +24,15 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080005;
-        public static final int buttonStartSurvey=0x7f080002;
-        public static final int pageFragmentRoot=0x7f080004;
-        public static final int root=0x7f080003;
+        public static final int action_settings=0x7f080008;
+        public static final int buttonStartSurvey=0x7f080004;
+        public static final int editTextEmail=0x7f080003;
+        public static final int pageFragmentRoot=0x7f080007;
+        public static final int root=0x7f080006;
         public static final int spinnerFileSelector=0x7f080001;
+        public static final int textViewSendMailTo=0x7f080002;
         public static final int textViewWelcomeMessage=0x7f080000;
+        public static final int thankYou=0x7f080005;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -47,6 +50,9 @@ public final class R {
         public static final int app_name=0x7f050001;
         public static final int buttonStartSurvey=0x7f050004;
         public static final int hello_world=0x7f050000;
+        public static final int sendMailTo=0x7f050007;
+        public static final int sendMailToHint=0x7f050008;
+        public static final int thanksForParticipating=0x7f050009;
         public static final int title_activity_send_email=0x7f050006;
         public static final int title_activity_survey=0x7f050005;
         public static final int welcomeMessage=0x7f050003;

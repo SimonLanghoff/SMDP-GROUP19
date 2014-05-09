@@ -2,14 +2,20 @@ package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity {
@@ -41,6 +47,20 @@ public class MainActivity extends Activity {
 	}
 	
 	public void buttonStartSurveyOnClick(View v) {
+		EditText email = (EditText) findViewById(R.id.editTextEmail);
+		
+		if(!email.getText().toString().contains("@")) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Missing E-mail")
+				.setMessage("Please enter a valid e-mail address")
+				.setNeutralButton("OK", null)
+				.show();
+			
+			return;
+		}
+		
+		AnswerCollector.setRecipient(email.getText().toString());
+		
 		Spinner fileSelector = (Spinner) findViewById(R.id.spinnerFileSelector);
 		String filename = (String) fileSelector.getSelectedItem();
 		

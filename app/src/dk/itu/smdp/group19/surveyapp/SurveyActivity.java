@@ -11,13 +11,14 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import dk.itu.smdp.group19.surveyapp.parser.Action;
 import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 import dk.itu.smdp.group19.surveyapp.parser.DefaultAnswerChangeListener;
@@ -81,7 +82,7 @@ public class SurveyActivity extends Activity {
 		};
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Exit survey?")
+		builder.setTitle("Exit Survey?")
 			.setMessage("This will exit the survey, and all data will be lost. Are you sure?")
 			.setPositiveButton("Yes", dialogClickListener)
 			.setNegativeButton("No", dialogClickListener)
@@ -118,25 +119,16 @@ public class SurveyActivity extends Activity {
 				QuestionPage questionPage = (QuestionPage) page;
 
 				for (Question question : questionPage.getQuestions()) {
-					layout.addView(controlGenerator
-							.makeQuestionHeader(question));
+					layout.addView(controlGenerator.makeQuestionHeader(question));
 
 					ViewGroup answers = null;
 
 					if (question.getType() == QuestionType.SINGLE) {
-						answers = controlGenerator.makeSingleChoiceAnswers(
-								question.getAnswers(),
-								new DefaultAnswerChangeListener(
-										answerChangedCallback));
+						answers = controlGenerator.makeSingleChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					} else if (question.getType() == QuestionType.MULTI) {
-						answers = controlGenerator.makeMultiChoiceAnswers(
-								question.getAnswers(),
-								new DefaultAnswerChangeListener(
-										answerChangedCallback));
+						answers = controlGenerator.makeMultiChoiceAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					} else if (question.getType() == QuestionType.FREETEXT) {
-						answers = controlGenerator.makeFreetextAnswers(question
-								.getAnswers(), new DefaultAnswerChangeListener(
-								answerChangedCallback));
+						answers = controlGenerator.makeFreetextAnswers(question.getAnswers(), new DefaultAnswerChangeListener(answerChangedCallback));
 					}
 
 					layout.addView(answers);
@@ -218,6 +210,16 @@ public class SurveyActivity extends Activity {
 		buttonSend.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(!AnswerCollector.checkMandatoriesHaveAnswers()) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(SurveyActivity.this);
+					builder.setTitle("Missing Answer")
+						.setMessage("Please answer all non-optional questions.")
+						.setNeutralButton("OK", null)
+						.show();
+					
+					return;
+				}
+				
 				removeFocusFromAllElements();
 
 				Intent i = new Intent(v.getContext(), SendEmailActivity.class);
@@ -270,11 +272,26 @@ public class SurveyActivity extends Activity {
 	private void setGroupEnabled(ViewGroup view, boolean enabled) {
 		for (int i = 0; i < view.getChildCount(); i++) {
 			View v = view.getChildAt(i);
-			if (v instanceof ViewGroup)
+			if(v instanceof RadioGroup) {
+				RadioGroup rg = (RadioGroup) v;
+				rg.clearCheck();
+				setGroupEnabled(rg, enabled);
+			}
+			else if (v instanceof ViewGroup) {
 				setGroupEnabled((ViewGroup) v, enabled);
-			else
+			}
+			else if (v instanceof CheckBox) {
+				CheckBox cb = (CheckBox) v;
+				cb.setEnabled(enabled);
+				if(!enabled) {
+					cb.setChecked(false);
+				}
+			}
+			else {
 				v.setEnabled(enabled);
+			}
 		}
+		
 		view.setEnabled(enabled);
 	}
 }

@@ -8,5 +8,8 @@
     <string name="buttonStartSurvey">Start Survey</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_send_email">SendEmailActivity</string>
+    <string name="sendMailTo">Send an e-mail with the replies to this address:</string>
+    <string name="sendMailToHint">E-mail</string>
+    <string name="thanksForParticipating">Thank you for participating in the survey! You answers have been sent to</string>
 
 </resources>
