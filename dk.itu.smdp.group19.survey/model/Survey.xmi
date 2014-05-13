@@ -4,41 +4,99 @@
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:surveymodel="platform:/resource/dk.itu.smdp.group19.survey/model/Survey.ecore"
-    title="Test Survey">
+    title="Mobile Survey">
+  <pages xsi:type="surveymodel:DescriptionPage"
+      title="Introduction"
+      text="Welcome to this survey about mobile phones"/>
   <pages xsi:type="surveymodel:QuestionPage"
-      title="Question Page 1"
-      text="This page will have some test questions">
+      title="Brand Familiarity"
+      text="">
     <questions
-        xsi:type="surveymodel:SingleChoiceQuestion"
-        text="Test Question 1">
-      <answers
-          xsi:type="surveymodel:FreetextAnswer"
-          text="Type in your own answer!"
-          name="Answer A"/>
+        xsi:type="surveymodel:MultiChoiceQuestion"
+        text="Please specify which smartphone brands you know of">
       <answers
           xsi:type="surveymodel:ChoiceAnswer"
-          text="This is answer B"
-          name="Answer B"/>
+          text=""
+          name="KnowHTC"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="KnowApple"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="KnowSamsung"/>
+      <answers
+          xsi:type="surveymodel:FreetextAnswer"
+          name="KnowBrandOther"/>
     </questions>
     <questions
-        xsi:type="surveymodel:FreetextQuestion"
-        text="Please Let us know what we can do to improve this survey"
-        optional="true">
+        xsi:type="surveymodel:SingleChoiceQuestion"
+        text="Please select which smartphone brand you like the best">
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="LikeHTC"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="LikeApple"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="LikeSamsung"/>
+      <answers
+          xsi:type="surveymodel:FreetextAnswer"
+          name="LikeBrandOther"/>
+    </questions>
+    <questions
+        text=""/>
+  </pages>
+  <pages xsi:type="surveymodel:QuestionPage"
+      title="Smartphone Possession"
+      text="">
+    <questions
+        xsi:type="surveymodel:SingleChoiceQuestion"
+        text="Do you own a smartphone?">
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          text=""
+          name="PossessionYes"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="PossessionNo"/>
+    </questions>
+    <questions
+        xsi:type="surveymodel:SingleChoiceQuestion"
+        text="What is the brand of your smartphone?">
       <requires
-          xsi:type="surveymodel:Or">
+          xsi:type="surveymodel:And">
         <lhs
             xsi:type="surveymodel:AnswerRef"
-            refers="Answer A"/>
+            refers="PossessionYes"/>
         <rhs
-            xsi:type="surveymodel:AnswerRef"
-            refers="Answer B"/>
+            xsi:type="surveymodel:Not">
+          <dependency
+              xsi:type="surveymodel:AnswerRef"
+              refers="PossessionNo"/>
+        </rhs>
       </requires>
       <answers
-          text="&quot;&quot;"
-          name="Please Specify"/>
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="OwnsHTC"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="OwnsApple"/>
+      <answers
+          xsi:type="surveymodel:ChoiceAnswer"
+          name="OwnsSamsung"/>
+      <answers
+          xsi:type="surveymodel:FreetextAnswer"
+          name="OwnsOther"/>
     </questions>
   </pages>
+  <pages xsi:type="surveymodel:QuestionPage"
+      title="Feedback">
+    <questions
+        xsi:type="surveymodel:FreetextQuestion"
+        text="Please give us some very important feedback here"/>
+  </pages>
   <pages xsi:type="surveymodel:ResultPage"
-      title="Done!"
-      text="Congratulations, you survived!"/>
+      title="Thank you!"/>
+  <pages/>
 </surveymodel:Survey>
