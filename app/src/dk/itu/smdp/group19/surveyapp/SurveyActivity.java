@@ -1,5 +1,10 @@
 package dk.itu.smdp.group19.surveyapp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +15,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -46,16 +53,40 @@ public class SurveyActivity extends Activity {
 
 		SURVEY_FILE_NAME = getIntent().getStringExtra("filename");
 
-		String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
-
-		controlGenerator = new UserControlGenerator(this);
-
-		XmlParser parser = new XmlParser(filePath);
+		InputStream xmlFileStream = null;
+		XmlParser parser;
+		
+		if(SURVEY_FILE_NAME.equals(MainActivity.SAMPLE_SURVEY_NAME)) {
+			try {
+				AssetManager assetManager = getAssets();
+				xmlFileStream = assetManager.open(MainActivity.SAMPLE_SURVEY_NAME);
+			} catch (IOException e) {
+				Log.d(TAG, "An error occurred while opening file from Assets.");
+				e.printStackTrace();
+			}
+			
+			parser = new XmlParser(xmlFileStream);
+		}
+		else {
+			String filePath = APPDIR + "/" + SURVEY_FILE_NAME;
+			
+			try {
+				xmlFileStream = new FileInputStream(new File(filePath));
+			} catch (FileNotFoundException e) {
+				Log.d(TAG, "An error occurred while opening file.");
+				e.printStackTrace();
+			}
+			
+			parser = new XmlParser(xmlFileStream);
+		}
+		
 		Survey survey = parser.parse();
-
-		if (survey != null)
+		controlGenerator = new UserControlGenerator(this);
+		
+		if (survey != null) {
 			generateSurvey(survey);
-
+		}
+			
 		allQuestions = collectQuestions(survey);
 		applyDependencies(allQuestions);
 

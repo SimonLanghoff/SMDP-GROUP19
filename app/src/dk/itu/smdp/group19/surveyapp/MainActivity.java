@@ -2,14 +2,11 @@ package dk.itu.smdp.group19.surveyapp;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -17,9 +14,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import dk.itu.smdp.group19.surveyapp.parser.AnswerCollector;
 
 public class MainActivity extends Activity {
 	public static final String TAG = "MainActivity";
+	public static final String SAMPLE_SURVEY_NAME = "sample_survey_130514.xml";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +41,10 @@ public class MainActivity extends Activity {
 			}
 		}
 		
-		return fileList;
+		// add sample survey
+		fileList.add(SAMPLE_SURVEY_NAME);
 		
+		return fileList;
 	}
 	
 	public void buttonStartSurveyOnClick(View v) {

@@ -1,0 +1,52 @@
+<Survey name="Mobile Survey">
+	<pages>
+		<DescriptionPage name="Introduction" text="Welcome to this survey about Mobile Phones">
+		</DescriptionPage>
+		<QuestionPage name="Brand Familiarity" text="This page is about various smartphone brands">
+            <MultiChoiceQuestion name="Please specify which smartphone brands you know of" optional="false">
+                <ChoiceAnswer name="KnowHTC" text="HTC"/>
+                <ChoiceAnswer name="KnowApple" text="Apple"/>
+                <ChoiceAnswer name="KnowSamsung" text="Samsung"/>
+                <FreetextAnswer name="KnowBrandOther" text="Other"/>
+                
+            </MultiChoiceQuestion>
+            <SingleChoiceQuestion name="Please select which smartphone brand you like the most" optional="false">
+                <ChoiceAnswer name="LikeHTC" text="HTC"/>
+                <ChoiceAnswer name="LikeApple" text="Apple"/>
+                <ChoiceAnswer name="LikeSamsung" text="Samsung"/>
+                <FreetextAnswer name="LikeBrandOther" text="Other"/>
+                
+            </SingleChoiceQuestion>
+		</QuestionPage>
+		<QuestionPage name="Smartphone possession" text="This page is about Smartphone possession">
+            <SingleChoiceQuestion name="Do you own a smartphone?" optional="false">
+                <ChoiceAnswer name="possessionYes" text="Yes"/>
+                <ChoiceAnswer name="possessionNo" text="No"/>
+                
+            </SingleChoiceQuestion>
+            <SingleChoiceQuestion name="What is the brand of your smartphone?" optional="false">
+                <ChoiceAnswer name="ownsHTC" text="HTC"/>
+                <ChoiceAnswer name="ownsApple" text="Apple"/>
+                <ChoiceAnswer name="ownsSamsung" text="Samsung"/>
+                <FreetextAnswer name="ownsOther" text="Other"/>
+                
+                <Requires>
+                    <And>
+                        <AnswerRef name="possessionYes" />
+                        <Not>
+                            <AnswerRef name="possessionNo" />
+                        </Not>
+                    </And>
+                </Requires>
+            </SingleChoiceQuestion>
+		</QuestionPage>
+		<QuestionPage name="Feedback" text="On this page you can provide us with very important feedback">
+            <FreetextQuestion name="Please give us some very important feedback about this survey" optional="true">
+                <FreetextAnswer name="answerFeedback" text="Please write very important feedback here"/>
+                
+            </FreetextQuestion>
+		</QuestionPage>
+		<ResultPage name="Thank you!" text="Thank you for participating in this survey, we like you!">
+		</ResultPage>
+	</pages>
+</Survey>
